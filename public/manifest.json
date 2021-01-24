@@ -3,15 +3,16 @@
   "name": "Extension Name",
   "version": "0.1",
   "description": "Some Description",
-  "permissions": [
-  ],
+  "permissions": [],
   "background": {
     "scripts": ["static/js/background.js"]
   },
   "content_scripts": [{
     "js": [ "static/js/content.js" ],
     "matches": [
-      "http://*.example.com/*", "https://*.example.com/*"
+      "https://*.amazon.com/*", 
+      "https://*.barnesandnoble.com/*",
+      "https://*.goodreads.com/*"
     ]
   }],
   "icons": {

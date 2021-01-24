@@ -16,7 +16,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-app-rewired build",
-    "build:prod": "webpack -p",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
@@ -41,8 +40,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "webpack-cli": "^4.4.0"
   }
 }
