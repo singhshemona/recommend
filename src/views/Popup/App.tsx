@@ -1,20 +1,20 @@
 import React from 'react'
-import './App.css'
+import styled from 'styled-components';
 
-function App() {
+const Heading = styled.div`
+  font-size: 20px;
+`;
 
+const LinkToOptions = styled.a`
+  font-weight: bold;
+  color: black;
+`
+
+export const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Popup page</p>
-        <p>
-          Edit <code>src/views/Popup/App.tsx</code> and save.
-        </p>
-        <button id="go-to-options">Go to options</button>
-        <a href="options.html" target="_blank">Options</a>
-      </header>
+    <div>
+      <Heading>Welcome to Recommend</Heading>
+      <LinkToOptions href="options.html" target="_blank">Options</LinkToOptions>
     </div>
   );
 }
-
-export default App
