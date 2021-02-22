@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios';
+import React, { useState } from 'react'
 import { books } from './books';
 import styled from 'styled-components';
 
@@ -14,8 +13,10 @@ const Row = styled.div`
 export const App = () => {
 
   const [ shelf, setShelf ] = useState([])
-  const [ value, setValue ] = useState('')
   const [ results, setResults ] = useState()
+
+  const [ title, setTitle ] = useState('')
+  const [ author, setAuthor ] = useState('')
 
   // useEffect goes here to fetch books on shelf from database
   // useEffect(() => {
@@ -26,41 +27,52 @@ export const App = () => {
   //   });
   // }, [])
 
-  const getBooks = () => {
-    let arr = value.replace(/\s+/g, '%20')
-    const getBook:{} = {
-      url: 'http://classify.oclc.org/classify2/Classify?title=' + arr,
-      method: 'GET',
-      headers: {
-        "Access-Control-Allow-Origin": "http://localhost:3000", 
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
-        'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-      }
-    };
-
-    axios(getBook)
-      .then(response => {
-        console.log(response)
-        // setResults(response)
-      });
+  const getByTitle = () => {
+    let titleParsed = title.replace(/\s+/g, '%20')
+    window.open(
+      'http://classify.oclc.org/classify2/ClassifyDemo?search-title-txt=' + titleParsed + '&startRec=0', 
+      "_blank"
+    )
   }
 
+  const getByAuthor = () => {
+    let authorParsed = author.replace(/\s+/g, '%20')
+    window.open(
+      'http://classify.oclc.org/classify2/ClassifyDemo?search-author-txt=' + authorParsed + '&startRec=0', 
+      "_blank"
+    )
+  }
+   
   return (
     <div>
       {shelf.length === 0 && 
         <h1>You don't seem to have any books! Add some below now.</h1>
       }
-      <input 
-        value={value} 
-        placeholder='Search any book' 
-        type="text" 
-        onChange={event => setValue(event.target.value)} 
-      />
-      <button 
-        type='submit' 
-        onClick={getBooks}>
-        Search
-      </button>
+      <form>
+        <input 
+          value={title} 
+          placeholder='Search by title' 
+          type="text" 
+          onChange={event => setTitle(event.target.value)} 
+        />
+        <button 
+          type='submit' 
+          onClick={getByTitle}>
+          Search by title
+        </button>
+        <input 
+          value={author} 
+          placeholder='Search by author' 
+          type="text" 
+          onChange={event => setAuthor(event.target.value)} 
+        />
+        <button 
+          type='submit' 
+          onClick={getByAuthor}>
+          Search by author
+        </button>
+      </form>
+      
       {results}
       <BookShelf>
         <Row className='800'>
