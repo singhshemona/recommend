@@ -3,7 +3,12 @@
   "name": "Extension Name",
   "version": "0.1",
   "description": "Some Description",
-  "permissions": [],
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "bookmarks",
+    "http://classify.oclc.org/*"
+  ],
   "background": {
     "scripts": ["static/js/background.js"]
   },
@@ -12,7 +17,8 @@
     "matches": [
       "https://*.amazon.com/*", 
       "https://*.barnesandnoble.com/*",
-      "https://*.goodreads.com/*"
+      "https://*.goodreads.com/*",
+      "http://classify.oclc.org/*"
     ]
   }],
   "icons": {

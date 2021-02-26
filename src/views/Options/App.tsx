@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { books } from './books';
 import styled from 'styled-components';
+import axios from "axios";
 
 const BookShelf = styled.div`
   background-color: tan;
@@ -19,13 +20,12 @@ export const App = () => {
   const [ author, setAuthor ] = useState('')
 
   // useEffect goes here to fetch books on shelf from database
-  // useEffect(() => {
-  //   db.ref('/').on('value', (querySnapShot:any) => {
-  //     let data = querySnapShot.val() ? querySnapShot.val() : {};
-  //     let allData = {...data};
-  //     setShelf(allData)
-  //   });
-  // }, [])
+  useEffect(() => {
+    axios
+      .get("/api/books/")
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  }, [])
 
   const getByTitle = () => {
     let titleParsed = title.replace(/\s+/g, '%20')
