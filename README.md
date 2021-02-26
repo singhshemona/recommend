@@ -20,8 +20,7 @@ You will also see any lint errors in the console.
 
 # To run backend - Django:
 1. `cd backend`
-2. `pip install -r requirements.txt` to install all python packages (must have pip installed)
-  - `conda install --yes --file requirements.txt` if using conda  
+2. `pip install -r requirements.txt` to install all python packages (must have pip installed) or `conda install --yes --file requirements.txt` if using conda  
 4. `python manage.py runserver`
 5. click on development server in terminal [http://localhost:8000/](http://localhost:8000)
 6. Navitage to [Books](http://127.0.0.1:8000/api/books/) to see a json of books
