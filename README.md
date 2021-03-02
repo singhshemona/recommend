@@ -5,7 +5,7 @@ Let's build a world where recommendations give you a breadth of knowledge, not j
 1. `git clone https://github.com/singhshemona/recommmend.git`
 2. `cd recommmend`
 
-# To run backend (Django):
+## To run backend (Django):
 1. `cd backend`
 2. `pip install -r requirements.txt` to install all python packages (must have pip installed) or `conda install --yes --file requirements.txt` if using conda or `python -m pip install -r requirements.txt` if running on a mac  
 3. `python manage.py migrate`
