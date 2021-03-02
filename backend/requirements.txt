@@ -41,7 +41,7 @@ requests==2.25.1
 requests-toolbelt==0.9.1
 rsa==4.7.1
 s3transfer==0.3.4
-setuptools==52.0.0.post20210125
+setuptools==52.0.0
 six==1.15.0
 sqlparse==0.4.1
 urllib3==1.26.3
