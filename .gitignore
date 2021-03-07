@@ -3,7 +3,9 @@
 *.pot
 *.pyc
 __pycache__
-db.sqlite3
+
+## Maybe add database back in production
+# db.sqlite3
 media
 
 # Python # 

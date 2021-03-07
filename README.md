@@ -12,6 +12,7 @@ Let's build a world where recommendations give you a breadth of knowledge, not j
 4. `python manage.py runserver`
 5. click on development server in terminal [http://localhost:8000/](http://localhost:8000)
 6. Navitage to [Books](http://127.0.0.1:8000/api/books/) to see a json of books
+7. Navigate to [Registration](http://127.0.0.1:8000/register/)
 
 ## To run frontend:
 1. `npm install`

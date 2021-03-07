@@ -16,12 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from recommend import views
+from recommend import views as main_page_views
+from users import views as user_views
+# from . import views as home_views
 
 router = routers.DefaultRouter()
-router.register(r'books', views.BookView, 'book')
+router.register(r'books', main_page_views.BookView, 'book')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('register/', user_views.register, name='register'),
     path('api/', include(router.urls)),
+    path('', main_page_views.home, name='home'),
 ]
