@@ -7,7 +7,7 @@ Let's build a world where recommendations give you a breadth of knowledge, not j
 
 ## To run backend (Django):
 1. `cd backend`
-2. `pip install -r requirements.txt` to install all python packages (must have pip installed) or `conda install --yes --file requirements.txt` if using conda or `python -m pip install -r requirements.txt` if running on a mac  
+2. `pip install -r requirements.txt` to install all python packages (must have pip installed) or `conda install --yes --file requirements.txt` if using conda or `python -m pip install -r requirements.txt` if running on a mac - you only need to do this step once
 3. `python manage.py migrate`
 4. `python manage.py runserver`
 5. click on development server in terminal [http://localhost:8000/](http://localhost:8000)
