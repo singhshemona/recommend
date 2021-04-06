@@ -15,3 +15,7 @@ def home(response):
 class BookView(viewsets.ModelViewSet):
     serializer_class = BookSerializer
     queryset = Book.objects.all()
+
+def bookClassifyView(request):
+    link = 'http://classify.oclc.org/classify2/Classify?owi=5418887444'
+    return HttpResponse(link)
