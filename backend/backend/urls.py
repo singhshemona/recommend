@@ -28,6 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
     path('api/', include(router.urls)),
-    path('bookclassify/', main_page_views.bookClassifyView, name='search_book'),
+    path('bookclassify/', main_page_views.deweyDecimalLink, name='search_book'),
     path('', main_page_views.home, name='home')
 ]
