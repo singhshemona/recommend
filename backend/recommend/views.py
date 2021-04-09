@@ -50,6 +50,5 @@ def deweyDecimalLink(request):
 def classifyXMLdata(request):
 
     HttpResponseRedirect(request)
-
     # bookXML = request.GET.get(request)
 
