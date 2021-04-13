@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'recommend',
     'crispy_forms',
+    # 'import_data'
 ]
 
 MIDDLEWARE = [
