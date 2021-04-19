@@ -16,18 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from recommend import views as main_page_views
+from recommend import views as recommend_views
 from users import views as user_views
 # from . import views as home_views
 
 router = routers.DefaultRouter()
-router.register(r'books', main_page_views.BookView, 'book')
-# router.register(r'bookclassify', main_page_views.BookClassify, 'bookclassify')
+router.register(r'books', recommend_views.BookView, 'book')
+# router.register(r'bookclassify', recommend_views.BookClassify, 'bookclassify')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
     path('api/', include(router.urls)),
-    path('bookclassify/', main_page_views.deweyDecimalLink, name='search_book'),
-    path('', main_page_views.home, name='home')
+    # path('bookclassify/', include(router.urls), name='search_book'),
+    path('bookclassify/', recommend_views.deweyDecimalLink, name='search_book'),
+    path('', recommend_views.home, name='home')
 ]
