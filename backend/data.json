@@ -1,1 +1,362 @@
-{"classify": {"@xmlns": "http://classify.oclc.org", "response": {"@code": "4"}, "workCount": "210", "start": "0", "maxRecs": "25", "orderBy": "thold desc", "input": {"@type": "title", "#text": "into+the+wild"}, "works": {"work": [{"@author": "Krakauer, Jon | Freixa, Albert, [Translator] | Mijn, Aad van der -2004 [Translator] | Trodden, Katarina [Translator]", "@editions": "250", "@format": "Book", "@holdings": "7195", "@hyr": "2021", "@itemtype": "itemtype-book", "@lyr": "1988", "@owi": "263706", "@schemes": "DDC LCC", "@title": "Into the wild", "@wi": "32857731"}, {"@author": "Penn, Sean", "@editions": "134", "@format": "DVD video", "@holdings": "3379", "@hyr": "2016", "@itemtype": "itemtype-video-dvd", "@lyr": "2006", "@owi": "738435677", "@schemes": "DDC LCC", "@title": "Into the Wild", "@wi": "181656303"}, {"@author": "Hunter, Erin | Hern\u00e1ndez Sala, Bego\u00f1a [Translator] | Stevenson, Dave [Illustrator]", "@editions": "51", "@format": "Book", "@holdings": "3214", "@hyr": "2016", "@itemtype": "itemtype-book", "@lyr": "2001", "@owi": "865809", "@schemes": "DDC LCC", "@title": "Into the wild", "@wi": "51538757"}, {"@author": "Cronin, Doreen | Cornell, Kevin [Illustrator]", "@editions": "27", "@format": "Book", "@holdings": "2012", "@hyr": "2018", "@itemtype": "itemtype-book", "@lyr": "2014", "@owi": "1861928724", "@schemes": "DDC", "@title": "The chicken squad", "@wi": "860755757"}, {"@author": "Casey, Susan, 1962-", "@editions": "25", "@format": "Book", "@holdings": "1585", "@hyr": "2017", "@itemtype": "itemtype-book", "@lyr": "2015", "@owi": "2239622680", "@schemes": "DDC LCC", "@title": "Voices in the ocean : a journey into the wild and haunting world of dolphins", "@wi": "895117215"}, {"@author": "Krakauer, Jon", "@editions": "39", "@format": "Audiobook on CD", "@holdings": "1546", "@hyr": "2019", "@itemtype": "itemtype-audiobook-cd", "@lyr": "1996", "@owi": "1151554846", "@schemes": "DDC LCC", "@title": "Into the wild", "@wi": "34130080"}, {"@author": "McCandless, Carine", "@editions": "21", "@format": "Book", "@holdings": "1532", "@hyr": "2017", "@itemtype": "itemtype-book", "@lyr": "2014", "@owi": "1872502568", "@schemes": "DDC LCC", "@title": "The wild truth", "@wi": "877982269"}, {"@author": "Stein, Allan T., 1924-", "@editions": "9", "@format": "eBook", "@holdings": "1501", "@hyr": "2005", "@itemtype": "itemtype-book-digital", "@lyr": "2005", "@owi": "903079517", "@schemes": "DDC LCC", "@title": "Into the wild blue yonder : my life in the Air Force", "@wi": "55600541"}, {"@author": "Cronin, Doreen | Gilpin, Stephen [Illustrator] | Warrick, Jessica [Illustrator]", "@editions": "15", "@format": "Book", "@holdings": "1239", "@hyr": "2017", "@itemtype": "itemtype-book", "@lyr": "2016", "@owi": "2997533770", "@schemes": "DDC", "@title": "Into the wild : yet another misadventure", "@wi": "945071992"}, {"@author": "Krehan, Hannes", "@editions": "7", "@format": "eBook", "@holdings": "1229", "@hyr": "2014", "@itemtype": "itemtype-book-digital", "@lyr": "2013", "@owi": "1873971260", "@schemes": "DDC LCC", "@title": "\"Trust me - it's paradise\" The escapist motif in Into the Wild, The Beach and Are You Experienced?", "@wi": "871779643"}, {"@author": "Halpern, Julie, 1975-", "@editions": "10", "@format": "Book", "@holdings": "1065", "@hyr": "2011", "@itemtype": "itemtype-book", "@lyr": "2009", "@owi": "147618895", "@schemes": "DDC LCC", "@title": "Into the wild nerd yonder", "@wi": "252918383"}, {"@author": "Hunter, Erin", "@editions": "7", "@format": "Book", "@holdings": "964", "@hyr": "2016", "@itemtype": "itemtype-book", "@lyr": "2003", "@owi": "865809", "@schemes": "DDC LCC", "@title": "Into the wild : 1", "@wi": "54508379"}, {"@author": "Mahaffey, James A.", "@editions": "12", "@format": "Book", "@holdings": "732", "@hyr": "2018", "@itemtype": "itemtype-book", "@lyr": "2017", "@owi": "4232763876", "@schemes": "DDC LCC", "@title": "Atomic adventures : secret islands, forgotten N-rays, and isotopic murder--a journey into the wild world of nuclear science", "@wi": "959875770"}, {"@author": "Durst, Sarah Beth", "@editions": "12", "@format": "Book", "@holdings": "715", "@hyr": "2014", "@itemtype": "itemtype-book", "@lyr": "2007", "@owi": "3943449162", "@schemes": "DDC", "@title": "Into the Wild : a novel", "@wi": "85813610"}, {"@author": "Vedder, Eddie", "@editions": "29", "@format": "Musical CD", "@holdings": "558", "@hyr": "2010", "@itemtype": "itemtype-music-cd", "@lyr": "2007", "@owi": "4929534590", "@schemes": "DDC LCC", "@title": "Into the wild : music for the motion picture", "@wi": "166434281"}, {"@author": "Halestorm (Musical group)", "@editions": "23", "@format": "Musical CD", "@holdings": "393", "@hyr": "2015", "@itemtype": "itemtype-music-cd", "@lyr": "2015", "@owi": "9291193085", "@schemes": "DDC LCC", "@title": "Into the wild life", "@wi": "904452659"}, {"@author": "Korda, Lerryn", "@editions": "6", "@format": "Book", "@holdings": "370", "@hyr": "2010", "@itemtype": "itemtype-book", "@lyr": "2010", "@owi": "365127670", "@schemes": "DDC", "@title": "Into the wild", "@wi": "430839029"}, {"@author": "Casey, Susan, 1962-", "@editions": "7", "@format": "Audiobook on CD", "@holdings": "352", "@hyr": "2015", "@itemtype": "itemtype-audiobook-cd", "@lyr": "2015", "@owi": "2226664261", "@schemes": "DDC LCC", "@title": "Voices in the ocean : a journey into the wild and haunting world of dolphins", "@wi": "895727364"}, {"@author": "Leonard, Brendan", "@editions": "2", "@format": "Book", "@holdings": "340", "@hyr": "2017", "@itemtype": "itemtype-book", "@lyr": "2017", "@owi": "9566499772", "@schemes": "DDC LCC", "@title": "The great outdoors : a user's guide, everything you need to know before heading into the wild (and how to get back in one piece)", "@wi": "953599221"}, {"@editions": "9", "@format": "DVD video", "@holdings": "321", "@hyr": "2014", "@itemtype": "itemtype-video-dvd", "@lyr": "2011", "@owi": "3863175492", "@schemes": "DDC LCC", "@title": "Daisy : a hen into the wild", "@wi": "878924000"}, {"@editions": "17", "@format": "DVD video", "@holdings": "298", "@hyr": "2013", "@itemtype": "itemtype-video-dvd", "@lyr": "2007", "@owi": "477229692", "@schemes": "DDC LCC", "@title": "Futurama. Into the wild green yonder", "@wi": "302418954"}, {"@author": "Do, Anh", "@editions": "7", "@format": "Book", "@holdings": "259", "@hyr": "2019", "@itemtype": "itemtype-book", "@lyr": "2019", "@owi": "9049538660", "@schemes": "DDC LCC", "@title": "Into the wild", "@wi": "1097671952"}, {"@author": "Miller, Timothy, 1951-", "@editions": "3", "@format": "Book", "@holdings": "249", "@hyr": "2006", "@itemtype": "itemtype-book", "@lyr": "2006", "@owi": "4679762011", "@schemes": "DDC LCC", "@title": "Vroom! : motoring into the wild world of racing", "@wi": "62691082"}, {"@author": "Ciotta, Beth", "@editions": "5", "@format": "Book", "@holdings": "240", "@hyr": "2014", "@itemtype": "itemtype-book", "@lyr": "2010", "@owi": "377949300", "@schemes": "DDC LCC", "@title": "Into the wild", "@wi": "505422994"}, {"@author": "Kraus, Robert H. S. | Kraus, Robert H. S. [Editor]", "@editions": "12", "@format": "eBook", "@holdings": "207", "@hyr": "2020", "@itemtype": "itemtype-book-digital", "@lyr": "2019", "@owi": "9430186293", "@schemes": "DDC LCC", "@title": "Avian genomics in ecology and evolution : from the lab into the wild", "@wi": "1089221562"}]}, "navigation": {"pages": {"page": [{"label": "1"}, {"label": "2", "link": "25"}, {"label": "3", "link": "50"}]}, "next": "25", "last": "200"}}}
+{
+    "classify": {
+        "@xmlns": "http://classify.oclc.org",
+        "response": {
+            "@code": "4"
+        },
+        "workCount": "210",
+        "start": "0",
+        "maxRecs": "25",
+        "orderBy": "thold desc",
+        "input": {
+            "@type": "title",
+            "#text": "into+the+wild"
+        },
+        "works": {
+            "work": [
+                {
+                    "@author": "Krakauer, Jon | Freixa, Albert, [Translator] | Mijn, Aad van der -2004 [Translator] | Trodden, Katarina [Translator]",
+                    "@editions": "250",
+                    "@format": "Book",
+                    "@holdings": "7195",
+                    "@hyr": "2021",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "1988",
+                    "@owi": "263706",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the wild",
+                    "@wi": "32857731"
+                },
+                {
+                    "@author": "Penn, Sean",
+                    "@editions": "134",
+                    "@format": "DVD video",
+                    "@holdings": "3379",
+                    "@hyr": "2016",
+                    "@itemtype": "itemtype-video-dvd",
+                    "@lyr": "2006",
+                    "@owi": "738435677",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the Wild",
+                    "@wi": "181656303"
+                },
+                {
+                    "@author": "Hunter, Erin | Hern\u00e1ndez Sala, Bego\u00f1a [Translator] | Stevenson, Dave [Illustrator]",
+                    "@editions": "51",
+                    "@format": "Book",
+                    "@holdings": "3214",
+                    "@hyr": "2016",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2001",
+                    "@owi": "865809",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the wild",
+                    "@wi": "51538757"
+                },
+                {
+                    "@author": "Cronin, Doreen | Cornell, Kevin [Illustrator]",
+                    "@editions": "27",
+                    "@format": "Book",
+                    "@holdings": "2012",
+                    "@hyr": "2018",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2014",
+                    "@owi": "1861928724",
+                    "@schemes": "DDC",
+                    "@title": "The chicken squad",
+                    "@wi": "860755757"
+                },
+                {
+                    "@author": "Casey, Susan, 1962-",
+                    "@editions": "25",
+                    "@format": "Book",
+                    "@holdings": "1585",
+                    "@hyr": "2017",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2015",
+                    "@owi": "2239622680",
+                    "@schemes": "DDC LCC",
+                    "@title": "Voices in the ocean : a journey into the wild and haunting world of dolphins",
+                    "@wi": "895117215"
+                },
+                {
+                    "@author": "Krakauer, Jon",
+                    "@editions": "39",
+                    "@format": "Audiobook on CD",
+                    "@holdings": "1546",
+                    "@hyr": "2019",
+                    "@itemtype": "itemtype-audiobook-cd",
+                    "@lyr": "1996",
+                    "@owi": "1151554846",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the wild",
+                    "@wi": "34130080"
+                },
+                {
+                    "@author": "McCandless, Carine",
+                    "@editions": "21",
+                    "@format": "Book",
+                    "@holdings": "1532",
+                    "@hyr": "2017",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2014",
+                    "@owi": "1872502568",
+                    "@schemes": "DDC LCC",
+                    "@title": "The wild truth",
+                    "@wi": "877982269"
+                },
+                {
+                    "@author": "Stein, Allan T., 1924-",
+                    "@editions": "9",
+                    "@format": "eBook",
+                    "@holdings": "1501",
+                    "@hyr": "2005",
+                    "@itemtype": "itemtype-book-digital",
+                    "@lyr": "2005",
+                    "@owi": "903079517",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the wild blue yonder : my life in the Air Force",
+                    "@wi": "55600541"
+                },
+                {
+                    "@author": "Cronin, Doreen | Gilpin, Stephen [Illustrator] | Warrick, Jessica [Illustrator]",
+                    "@editions": "15",
+                    "@format": "Book",
+                    "@holdings": "1239",
+                    "@hyr": "2017",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2016",
+                    "@owi": "2997533770",
+                    "@schemes": "DDC",
+                    "@title": "Into the wild : yet another misadventure",
+                    "@wi": "945071992"
+                },
+                {
+                    "@author": "Krehan, Hannes",
+                    "@editions": "7",
+                    "@format": "eBook",
+                    "@holdings": "1229",
+                    "@hyr": "2014",
+                    "@itemtype": "itemtype-book-digital",
+                    "@lyr": "2013",
+                    "@owi": "1873971260",
+                    "@schemes": "DDC LCC",
+                    "@title": "\"Trust me - it's paradise\" The escapist motif in Into the Wild, The Beach and Are You Experienced?",
+                    "@wi": "871779643"
+                },
+                {
+                    "@author": "Halpern, Julie, 1975-",
+                    "@editions": "10",
+                    "@format": "Book",
+                    "@holdings": "1065",
+                    "@hyr": "2011",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2009",
+                    "@owi": "147618895",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the wild nerd yonder",
+                    "@wi": "252918383"
+                },
+                {
+                    "@author": "Hunter, Erin",
+                    "@editions": "7",
+                    "@format": "Book",
+                    "@holdings": "964",
+                    "@hyr": "2016",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2003",
+                    "@owi": "865809",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the wild : 1",
+                    "@wi": "54508379"
+                },
+                {
+                    "@author": "Mahaffey, James A.",
+                    "@editions": "12",
+                    "@format": "Book",
+                    "@holdings": "732",
+                    "@hyr": "2018",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2017",
+                    "@owi": "4232763876",
+                    "@schemes": "DDC LCC",
+                    "@title": "Atomic adventures : secret islands, forgotten N-rays, and isotopic murder--a journey into the wild world of nuclear science",
+                    "@wi": "959875770"
+                },
+                {
+                    "@author": "Durst, Sarah Beth",
+                    "@editions": "12",
+                    "@format": "Book",
+                    "@holdings": "715",
+                    "@hyr": "2014",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2007",
+                    "@owi": "3943449162",
+                    "@schemes": "DDC",
+                    "@title": "Into the Wild : a novel",
+                    "@wi": "85813610"
+                },
+                {
+                    "@author": "Vedder, Eddie",
+                    "@editions": "29",
+                    "@format": "Musical CD",
+                    "@holdings": "558",
+                    "@hyr": "2010",
+                    "@itemtype": "itemtype-music-cd",
+                    "@lyr": "2007",
+                    "@owi": "4929534590",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the wild : music for the motion picture",
+                    "@wi": "166434281"
+                },
+                {
+                    "@author": "Halestorm (Musical group)",
+                    "@editions": "23",
+                    "@format": "Musical CD",
+                    "@holdings": "393",
+                    "@hyr": "2015",
+                    "@itemtype": "itemtype-music-cd",
+                    "@lyr": "2015",
+                    "@owi": "9291193085",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the wild life",
+                    "@wi": "904452659"
+                },
+                {
+                    "@author": "Korda, Lerryn",
+                    "@editions": "6",
+                    "@format": "Book",
+                    "@holdings": "370",
+                    "@hyr": "2010",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2010",
+                    "@owi": "365127670",
+                    "@schemes": "DDC",
+                    "@title": "Into the wild",
+                    "@wi": "430839029"
+                },
+                {
+                    "@author": "Casey, Susan, 1962-",
+                    "@editions": "7",
+                    "@format": "Audiobook on CD",
+                    "@holdings": "352",
+                    "@hyr": "2015",
+                    "@itemtype": "itemtype-audiobook-cd",
+                    "@lyr": "2015",
+                    "@owi": "2226664261",
+                    "@schemes": "DDC LCC",
+                    "@title": "Voices in the ocean : a journey into the wild and haunting world of dolphins",
+                    "@wi": "895727364"
+                },
+                {
+                    "@author": "Leonard, Brendan",
+                    "@editions": "2",
+                    "@format": "Book",
+                    "@holdings": "340",
+                    "@hyr": "2017",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2017",
+                    "@owi": "9566499772",
+                    "@schemes": "DDC LCC",
+                    "@title": "The great outdoors : a user's guide, everything you need to know before heading into the wild (and how to get back in one piece)",
+                    "@wi": "953599221"
+                },
+                {
+                    "@editions": "9",
+                    "@format": "DVD video",
+                    "@holdings": "321",
+                    "@hyr": "2014",
+                    "@itemtype": "itemtype-video-dvd",
+                    "@lyr": "2011",
+                    "@owi": "3863175492",
+                    "@schemes": "DDC LCC",
+                    "@title": "Daisy : a hen into the wild",
+                    "@wi": "878924000"
+                },
+                {
+                    "@editions": "17",
+                    "@format": "DVD video",
+                    "@holdings": "298",
+                    "@hyr": "2013",
+                    "@itemtype": "itemtype-video-dvd",
+                    "@lyr": "2007",
+                    "@owi": "477229692",
+                    "@schemes": "DDC LCC",
+                    "@title": "Futurama. Into the wild green yonder",
+                    "@wi": "302418954"
+                },
+                {
+                    "@author": "Do, Anh",
+                    "@editions": "7",
+                    "@format": "Book",
+                    "@holdings": "259",
+                    "@hyr": "2019",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2019",
+                    "@owi": "9049538660",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the wild",
+                    "@wi": "1097671952"
+                },
+                {
+                    "@author": "Miller, Timothy, 1951-",
+                    "@editions": "3",
+                    "@format": "Book",
+                    "@holdings": "249",
+                    "@hyr": "2006",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2006",
+                    "@owi": "4679762011",
+                    "@schemes": "DDC LCC",
+                    "@title": "Vroom! : motoring into the wild world of racing",
+                    "@wi": "62691082"
+                },
+                {
+                    "@author": "Ciotta, Beth",
+                    "@editions": "5",
+                    "@format": "Book",
+                    "@holdings": "240",
+                    "@hyr": "2014",
+                    "@itemtype": "itemtype-book",
+                    "@lyr": "2010",
+                    "@owi": "377949300",
+                    "@schemes": "DDC LCC",
+                    "@title": "Into the wild",
+                    "@wi": "505422994"
+                },
+                {
+                    "@author": "Kraus, Robert H. S. | Kraus, Robert H. S. [Editor]",
+                    "@editions": "12",
+                    "@format": "eBook",
+                    "@holdings": "207",
+                    "@hyr": "2020",
+                    "@itemtype": "itemtype-book-digital",
+                    "@lyr": "2019",
+                    "@owi": "9430186293",
+                    "@schemes": "DDC LCC",
+                    "@title": "Avian genomics in ecology and evolution : from the lab into the wild",
+                    "@wi": "1089221562"
+                }
+            ]
+        },
+        "navigation": {
+            "pages": {
+                "page": [
+                    {
+                        "label": "1"
+                    },
+                    {
+                        "label": "2",
+                        "link": "25"
+                    },
+                    {
+                        "label": "3",
+                        "link": "50"
+                    }
+                ]
+            },
+            "next": "25",
+            "last": "200"
+        }
+    }
+}
