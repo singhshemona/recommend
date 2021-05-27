@@ -35,14 +35,23 @@ class BookView(viewsets.ModelViewSet):
 
 # take user's book title input and attach to the base url to display search result link
 def deweyDecimalLink(request):
+
+    # Search by title
+    '''
     base = 'http://classify.oclc.org/classify2/Classify?'
     parmType = 'title'
     parmValue = request.GET.get('q')
     searchURL = base + urlencode({parmType:parmValue.encode('utf-8')})
     # http://classify.oclc.org/classify2/Classify?title=into+the+wild
     # http://127.0.0.1:8000/bookclassify/?q=into+the+wild
+    '''
 
+    base = 'http://classify.oclc.org/classify2/Classify?'
+    parmType = 'isbn'
+    parmValue = request.GET.get('q')
+    searchURL = base + urlencode({parmType:parmValue.encode('utf-8')})
 
+    
     # redirect to OCLC's site to extract XML file of book
     xmlContent = urlopen(searchURL)
     xmlFile = xmlContent.read()
@@ -50,7 +59,8 @@ def deweyDecimalLink(request):
     jsonDumps = json.dumps(xmlDict)
     jsonContent = json.loads(jsonDumps)
 
-    items = jsonContent.get("classify").get('works').get('work')
+    # items = jsonContent.get("classify").get('works').get('work')
+    deweyNumber = jsonContent.get("classify").get('editions').get('edition')[0].get('classifications').get('class')[0].get('@sfa')
 
     # pets_data = open("data.json", "w")
     # json.dump(xmlDict, pets_data)
@@ -74,7 +84,7 @@ def deweyDecimalLink(request):
     Need to searlize the data! Then return JSON
     '''
 
-    return JsonResponse(items, safe=False)
+    return JsonResponse(deweyNumber, safe=False)
 
 
 
