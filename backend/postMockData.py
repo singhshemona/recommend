@@ -12,11 +12,13 @@ from urllib.parse import urlencode
 from json2table import convert
 import json
 
+with open ('bookMockData.json') as f:
+    data = json.load(f).items()
+JsonResponse(data, safe=False)
 
 
 
 # Create your views here.
-
 
 # def index(response, id):
 # 	ls = ToDoList.objects.get(id=id)
@@ -111,13 +113,3 @@ def owiToDDC(request):
     # return HttpResponse(html)
     # return HttpResponse(jsonContent)
 
-mockDataPath = '/home/taniya/Projects/bookRec/recommend/backend/recommend/bookMockData.json'
-def showStaticMock(path):
-
-    # file = open(mockDataPath)  
-    with open(mockDataPath) as file:
-        try:
-            data = json.load(file)
-        except:
-            data = {}  
-    return JsonResponse(data, safe=False)

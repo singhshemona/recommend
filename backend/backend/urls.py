@@ -30,5 +30,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     # path('bookclassify/', include(router.urls), name='search_book'),
     path('bookclassify/', recommend_views.deweyDecimalLink, name='search_book'),
-    path('', recommend_views.home, name='home')
+    path('', recommend_views.home, name='home'),
+    path('mockData/', recommend_views.showStaticMock),
+    
 ]
