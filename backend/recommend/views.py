@@ -11,6 +11,7 @@ from urllib.request import urlopen
 from urllib.parse import urlencode
 from json2table import convert
 import json
+import os
 
 
 
@@ -101,23 +102,31 @@ def owiToDDC(request):
 
 
 
-    # --------------------------------------------
-    # print(jsonContent, file='output.txt')
 
-    # json_object = {"key" : "value"}
-    # build_direction = "TOP_TO_BOTTOM"
-    # table_attributes = {"style" : "width:100%"}
-    # html = convert(json_object, build_direction=build_direction, table_attributes=table_attributes)
-    # return HttpResponse(html)
-    # return HttpResponse(jsonContent)
 
-mockDataPath = '/home/taniya/Projects/bookRec/recommend/backend/recommend/bookMockData.json'
-def showStaticMock(path):
+
+# fldr = os.path.basename('./bookMockData.json')
+'/home/taniya/Projects/bookRec/recommend/backend/recommend'
+# fldr = os.path.basename('/recommend/backend/recommend/')
+jsonData = 'bookMockData.json'
+
+# __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+# f = open(os.path.join(__location__, jsonData))
+
+def showStaticMock(request):
+
+    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    my_file = os.path.join(THIS_FOLDER, jsonData)
 
     # file = open(mockDataPath)  
-    with open(mockDataPath) as file:
-        try:
-            data = json.load(file)
-        except:
-            data = {}  
+    # with open(jsonData) as file:
+    #     try:
+    #         data = json.load(file)
+    #     except:
+    #         data = {}  
+
+
+    with open(my_file) as f:
+        data = json.load(f)
     return JsonResponse(data, safe=False)
