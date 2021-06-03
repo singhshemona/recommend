@@ -13,9 +13,6 @@ from json2table import convert
 import json
 import os
 
-
-
-
 # Create your views here.
 
 
@@ -31,21 +28,12 @@ class BookView(viewsets.ModelViewSet):
 
 
 
-# class DeweyView(viewsets.ModelViewSet):
-#     serializer_class = DeweyDecimalLink
-#     queryset = DeweyDecimalLink.objects.all()
 
 
-# take user's book title input and attach to the base url to display search result link
+
+# isbn to Dewey decimal
 def deweyDecimalLink(request):
 
-    # Search by title
-    base = 'http://classify.oclc.org/classify2/Classify?'
-    parmType = 'title'
-    parmValue = request.GET.get('q')
-    searchURL = base + urlencode({parmType:parmValue.encode('utf-8')})
-    # http://classify.oclc.org/classify2/Classify?title=into+the+wild
-    # http://127.0.0.1:8000/bookclassify/?q=into+the+wild
 
     base = 'http://classify.oclc.org/classify2/Classify?'
     parmType = 'isbn'
@@ -68,19 +56,6 @@ def deweyDecimalLink(request):
     # json.dump(xmlDict, pets_data)
     # pets_data.close()
 
-
-
-    # jsonDict = {}
-    # jsonDict["works"] = jsonContent.get('classify')
-
-    # result = []
-    # for item in jsonContent:
-    #     my_dict = {}
-    #     my_dict['owi']=item.get("classify").get
-    #     result.append(my_dict)
-    # back_json=json.dumps(jsonDict)
-
-    # books = jsonContent['work']
 
     '''
     # Need to searlize the data! Then return JSON
@@ -105,28 +80,28 @@ def owiToDDC(request):
 
 
 
-# fldr = os.path.basename('./bookMockData.json')
-'/home/taniya/Projects/bookRec/recommend/backend/recommend'
-# fldr = os.path.basename('/recommend/backend/recommend/')
 jsonData = 'bookMockData.json'
-
-# __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-
-# f = open(os.path.join(__location__, jsonData))
-
 def showStaticMock(request):
 
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, jsonData)
 
-    # file = open(mockDataPath)  
-    # with open(jsonData) as file:
-    #     try:
-    #         data = json.load(file)
-    #     except:
-    #         data = {}  
-
-
     with open(my_file) as f:
         data = json.load(f)
     return JsonResponse(data, safe=False)
+
+
+
+
+'''
+
+# Search by title
+# take user's book title input and attach to the base url to display search result link
+base = 'http://classify.oclc.org/classify2/Classify?'
+parmType = 'title'
+parmValue = request.GET.get('q')
+searchURL = base + urlencode({parmType:parmValue.encode('utf-8')})
+# http://classify.oclc.org/classify2/Classify?title=into+the+wild
+# http://127.0.0.1:8000/bookclassify/?q=into+the+wild
+
+'''
