@@ -11,9 +11,7 @@ from urllib.request import urlopen
 from urllib.parse import urlencode
 from json2table import convert
 import json
-
-
-
+import os
 
 # Create your views here.
 
@@ -30,21 +28,12 @@ class BookView(viewsets.ModelViewSet):
 
 
 
-# class DeweyView(viewsets.ModelViewSet):
-#     serializer_class = DeweyDecimalLink
-#     queryset = DeweyDecimalLink.objects.all()
 
 
-# take user's book title input and attach to the base url to display search result link
+
+# isbn to Dewey decimal
 def deweyDecimalLink(request):
 
-    # Search by title
-    base = 'http://classify.oclc.org/classify2/Classify?'
-    parmType = 'title'
-    parmValue = request.GET.get('q')
-    searchURL = base + urlencode({parmType:parmValue.encode('utf-8')})
-    # http://classify.oclc.org/classify2/Classify?title=into+the+wild
-    # http://127.0.0.1:8000/bookclassify/?q=into+the+wild
 
     base = 'http://classify.oclc.org/classify2/Classify?'
     parmType = 'isbn'
@@ -68,19 +57,6 @@ def deweyDecimalLink(request):
     # pets_data.close()
 
 
-
-    # jsonDict = {}
-    # jsonDict["works"] = jsonContent.get('classify')
-
-    # result = []
-    # for item in jsonContent:
-    #     my_dict = {}
-    #     my_dict['owi']=item.get("classify").get
-    #     result.append(my_dict)
-    # back_json=json.dumps(jsonDict)
-
-    # books = jsonContent['work']
-
     '''
     # Need to searlize the data! Then return JSON
     '''
@@ -101,23 +77,31 @@ def owiToDDC(request):
 
 
 
-    # --------------------------------------------
-    # print(jsonContent, file='output.txt')
 
-    # json_object = {"key" : "value"}
-    # build_direction = "TOP_TO_BOTTOM"
-    # table_attributes = {"style" : "width:100%"}
-    # html = convert(json_object, build_direction=build_direction, table_attributes=table_attributes)
-    # return HttpResponse(html)
-    # return HttpResponse(jsonContent)
 
-mockDataPath = '/home/taniya/Projects/bookRec/recommend/backend/recommend/bookMockData.json'
-def showStaticMock(path):
 
-    # file = open(mockDataPath)  
-    with open(mockDataPath) as file:
-        try:
-            data = json.load(file)
-        except:
-            data = {}  
+jsonData = 'bookMockData.json'
+def showStaticMock(request):
+
+    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    my_file = os.path.join(THIS_FOLDER, jsonData)
+
+    with open(my_file) as f:
+        data = json.load(f)
     return JsonResponse(data, safe=False)
+
+
+
+
+'''
+
+# Search by title
+# take user's book title input and attach to the base url to display search result link
+base = 'http://classify.oclc.org/classify2/Classify?'
+parmType = 'title'
+parmValue = request.GET.get('q')
+searchURL = base + urlencode({parmType:parmValue.encode('utf-8')})
+# http://classify.oclc.org/classify2/Classify?title=into+the+wild
+# http://127.0.0.1:8000/bookclassify/?q=into+the+wild
+
+'''
