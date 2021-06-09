@@ -2,8 +2,8 @@
 
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import BookSerializer, DeweyDecimalLink
-from .models import Book
+from .serializers import BookSerializer, DeweyDecimalLink, BooksDisplayedSerlizer
+from .models import Book, BooksDisplayed
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import xml.etree.ElementTree as ET
 import xmltodict, json
@@ -12,6 +12,7 @@ from urllib.parse import urlencode
 from json2table import convert
 import json
 import os
+
 
 # Create your views here.
 
@@ -57,14 +58,6 @@ def deweyDecimalLink(request):
     # pets_data.close()
 
 
-    '''
-    # Need to searlize the data! Then return JSON
-    '''
-    return JsonResponse(base, safe=False)
-
-
-
-
 
 def owiToDDC(request):
     base = 'http://classify.oclc.org/classify2/Classify?'
@@ -75,22 +68,24 @@ def owiToDDC(request):
 
 
 
-
-
-
-
-
-jsonData = 'bookMockData.json'
 def showStaticMock(request):
 
-    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-    my_file = os.path.join(THIS_FOLDER, jsonData)
-
-    with open(my_file) as f:
-        data = json.load(f)
-    return JsonResponse(data, safe=False)
+    # if request.method == 'GET':
+    snippets = BooksDisplayed.objects.all()
+    serializer = BooksDisplayedSerlizer(snippets, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 
+
+def saveFileUpload(upload, savePath):
+
+    with open(savePath, "wb+") as outputFile:
+        uploadedFile = upload.FILES["file-upload-name"]
+        for chunk in uploadedFile.chunks():
+            outputFile.write(chunk)
+
+
+    
 
 
 '''
@@ -104,4 +99,14 @@ searchURL = base + urlencode({parmType:parmValue.encode('utf-8')})
 # http://classify.oclc.org/classify2/Classify?title=into+the+wild
 # http://127.0.0.1:8000/bookclassify/?q=into+the+wild
 
+# ------------------------------------------------------------
+jsonData = 'bookMockData.json'
+def showStaticMock(request):
+
+    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    my_file = os.path.join(THIS_FOLDER, jsonData)
+
+    with open(my_file) as f:
+        data = json.load(f)
+    return JsonResponse(data, safe=False)
 '''
