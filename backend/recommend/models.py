@@ -53,7 +53,7 @@ class BooksDisplayed(models.Model):
         size = 20,
         default=list,
         null=True)
-    date_added = models.DateTimeField(default=timezone.now)
+    date_added = models.DateField
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # content = models.TextField()
 

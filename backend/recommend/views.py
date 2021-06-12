@@ -1,7 +1,7 @@
 # from ..backend import wsgi
 
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from .serializers import BookSerializer, DeweyDecimalLink, BooksDisplayedSerlizer
 from .models import Book, BooksDisplayed
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -71,8 +71,8 @@ def owiToDDC(request):
 def showStaticMock(request):
 
     # if request.method == 'GET':
-    snippets = BooksDisplayed.objects.all()
-    serializer = BooksDisplayedSerlizer(snippets, many=True)
+    queryset = BooksDisplayed.objects.all()
+    serializer = BooksDisplayedSerlizer(queryset, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 
@@ -84,6 +84,10 @@ def saveFileUpload(upload, savePath):
         for chunk in uploadedFile.chunks():
             outputFile.write(chunk)
 
+
+class BooksDisplayedList(generics.ListCreateAPIView):
+    queryset = BooksDisplayed.objects.all()
+    serializer_class = BooksDisplayedSerlizer
 
     
 
