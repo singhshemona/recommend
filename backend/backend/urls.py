@@ -32,5 +32,6 @@ urlpatterns = [
     path('bookclassify/', recommend_views.deweyDecimalLink, name='search_book'),
     path('', recommend_views.home, name='home'),
     path('mockData/', recommend_views.showStaticMock),
+    path('accounts/', include('django.contrib.auth.urls')),
     
 ]
