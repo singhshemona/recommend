@@ -23,6 +23,9 @@ import os
 
 def home(response):
 	return render(response, "recommend/home.html", {})
+
+
+    
 class BookView(viewsets.ModelViewSet):
     serializer_class = BookSerializer
     queryset = Book.objects.all()
