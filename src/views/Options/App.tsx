@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { BookShelf } from './components/BookShelf'
-import books from './sample.json';
 import axios from 'axios';
 
 export const App = () => {
   const [ title, setTitle ] = useState('')
   const [ author, setAuthor ] = useState('')
 
-  useEffect(() => {
-    axios
-      .get("/mockData/")
-      // .then((res) => setResults(res.data))
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-  }, [])
+  // useEffect(() => {
+  //   axios
+  //     .get("/mockData/")
+  //     // .then((res) => setResults(res.data))
+  //     .then((res) => console.log(res.data))
+  //     .catch((err) => console.log(err));
+  // }, [])
 
   const getByTitle = () => {
     let titleParsed = title.replace(/\s+/g, '%20')
@@ -58,11 +57,11 @@ export const App = () => {
         </button>
       </form>
       
-      {books.length === 0 ?
+      {/* {books.length === 0 ?
         <h1>You don't seem to have any books! Add some below now.</h1>
-        :
-        <BookShelf books={books} />
-      }
+        : */}
+        <BookShelf />
+      {/* } */}
     </div> 
   );
 }
