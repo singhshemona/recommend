@@ -1,14 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-type Props = {
-  heading: string;
-  books: [{
-    "title": "ultrices mattis odio donec vitae nisi",
-    "classify_DDC": 132.174,
-  }]
-}
-
 const Shelf = styled.div`
   display: flex;
 `
@@ -21,6 +13,14 @@ const Class = styled.h2`
   text-align: center;
   background: burlywood;
 `
+
+type Props = {
+  heading: string;
+  books: [{
+    "title": "ultrices mattis odio donec vitae nisi",
+    "classify_DDC": 132.174,
+  }]
+}
 
 export const Row = ({ heading, books }: Props) => {
   return (
