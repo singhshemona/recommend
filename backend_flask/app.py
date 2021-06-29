@@ -60,8 +60,6 @@ class Book(db.Model):
 
 
 
-
-
 # Routes
 # -------------------------------
 @app.route('/')
