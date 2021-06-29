@@ -19,8 +19,18 @@ bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+
+@app.shell_context_processor
+def make_shell_context():
+    return dict(db=db, User=User, Book=Book)
+
+
+
 # Models
 # -------------------------------------
+
+from werkzeug.security import generate_password_hash, check_password_hash
+
 bookshelf = db.Table('bookshelf', 
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
     db.Column('book_id', db.Integer, db.ForeignKey('books.id'))
@@ -48,21 +58,7 @@ class Book(db.Model):
     def __repr__(self):
         return f'<Book: {self.title}>'
 
-    # def to_json(self):
-    #     json_book = {
-    #         'title' : self.title,
-    #         'author_first' : self.author_first,
-    #         'author_last' : self.author_last,
-    #         'classify_DDC' : self.classify_DDC,
-    #         'classify_category' : self.classify_category,
-    #     }
 
-    #     return json_book
-
-
-@app.shell_context_processor
-def make_shell_context():
-    return dict(db=db, User=User, Book=Book)
 
 
 
