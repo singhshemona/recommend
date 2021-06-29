@@ -2,29 +2,16 @@ from flask import Flask, jsonify, render_template
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import os
-
-# Configs
-# -----------------------------------
-basedir = os.path.abspath(os.path.dirname(__file__))
-
-app = Flask(__name__)
-app.config['DEBUG'] = True
-app.config['SECRET_KEY'] = '4388cb0269cbe1d2a7c23dae8c64a9762f0838f63eed7f48'
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-    'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-bootstrap = Bootstrap(app)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 
 @app.shell_context_processor
 def make_shell_context():
     return dict(db=db, User=User, Book=Book)
 
-
+app = Flask(__name__)
+bootstrap = Bootstrap(app)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Models
 # -------------------------------------
