@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Row } from './Row';
 import axios from 'axios';
+import styled from 'styled-components';
 
+const AllBooks = styled.div`
+  max-width: 900px;
+  margin: 0 auto;
+  border: 1px solid black;
+  background: #f9debb;
+  border-radius: 16px;
+`
 export const BookShelf = () => {
   const [ loading, setLoading ] = useState(true)
   const [ books, setBooks ] = useState([{
@@ -39,7 +47,7 @@ export const BookShelf = () => {
     loading ? 
     <p>Loading...</p>
     :
-    <div>
+    <AllBooks>
       <Row 
         books={literature}
         heading={'Class 800 – Literature'}
@@ -48,6 +56,6 @@ export const BookShelf = () => {
         books={historyAndGeography}
         heading={'Class 900 – History and geography'}
       />
-    </div>
+    </AllBooks>
   );
 }
