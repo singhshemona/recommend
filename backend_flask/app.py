@@ -1,17 +1,17 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
-
-@app.shell_context_processor
-def make_shell_context():
-    return dict(db=db, User=User, Book=Book)
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+@app.shell_context_processor
+def make_shell_context():
+    return dict(db=db, User=User, Book=Book)
+
 
 # Models
 # -------------------------------------

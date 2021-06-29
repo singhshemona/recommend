@@ -8,9 +8,14 @@ class Config:
         # 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # calling init_app on the extensions completes their initialization
+    @staticmethod
+    def init_app(app):
+        pass
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    # ?? current name is 'data.sqlite, same as production ??'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
