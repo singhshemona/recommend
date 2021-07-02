@@ -38,7 +38,11 @@ class User(UserMixin, db.Model):
     
 
     def __repr__(self):
-        return f'<User: {self.username}>'  
+        # return f'<User: {self.username}>'  
+        return '<User %r>' % self.username
+
+
+
 class Book(db.Model):
     __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)
@@ -49,4 +53,5 @@ class Book(db.Model):
     classify_category = db.Column(db.String)
 
     def __repr__(self):
-        return f'<Book: {self.title}>'
+        # return f'<Book: {self.title}>'
+        return '<Book %r>' % self.title

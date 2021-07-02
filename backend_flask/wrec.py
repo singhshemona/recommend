@@ -24,17 +24,3 @@ def test():
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
 
-
-
-'''
-Routes - not including root
-'''
-
-@app.route('/bookshelf/', methods=['GET', 'POST'])
-def bookshelf_user():
-    # Lisa = User.query.filter_by(username='lisa').first()
-    # all_books = Lisa.books.all()
-
-    # return render_template('bookshelf.html', book=all_books)
-
-    return '<h1>Book Shelf</h1>'
