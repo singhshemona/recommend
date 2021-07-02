@@ -47,10 +47,32 @@ class Book(db.Model):
     __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
-    author_first = db.Column(db.String)
-    author_last = db.Column(db.String)
+    # author_first = db.Column(db.String)
+    # author_last = db.Column(db.String)
     classify_DDC = db.Column(db.Float)
     classify_category = db.Column(db.String)
+
+    ''' Goodreads info from csv import '''
+    book_id = db.Column(db.Integer)
+    author = db.Column(db.String)
+    additional_authors = db.Column(db.String)
+    isbn = db.Column(db.String)
+    isbn_13 = db.Column(db.Integer)
+    rating = db.Column(db.Integer)
+    avg_rating = db.Column(db.Float)
+    publisher = db.Column(db.String)
+    binding = db.Column(db.String)
+    pages = db.Column(db.Integer)
+    year_publish = db.Column(db.Date) # Integeer?
+    year_publish_original = db.Column(db.Date) # Integer?
+    date_read = db.Column(db.Date)
+    date_added = db.Column(db.Date)
+    bookshelves = db.Column(db.String)
+
+
+
+
+
 
     def __repr__(self):
         # return f'<Book: {self.title}>'

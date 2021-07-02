@@ -1,4 +1,5 @@
 from flask import render_template, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
 from . import main
 import flask_excel as excel
 
@@ -10,10 +11,34 @@ def index():
 
 
 # jsonify + request imports
-@main.route('/bookshelf', methods=['GET', 'POST'])
-def bookshelf_user():
+@main.route('/books/upload', methods=['GET', 'POST'])
+def csv_import():
     if request.method == 'POST':
-        return jsonify({"result": request.get_array(field_name='file')})
+
+        def goodreads_init_func(row):
+            user = User.query.filter_by(id=1)
+            b = Book(row['title'], 
+                row['book_id'], 
+                row['author'], 
+                row['additional_authors'], 
+                row['ISBN'], 
+                row['My Rating'], 
+                row['Average Rating'], 
+                row['Publisher'], 
+                row['Number of Pages'], 
+                row['Year Published'], 
+                row['Original Publication Year'], 
+                row['Date Read'], 
+                row['Date Added'], 
+                row['Bookshelves'],
+                user)
+            return b
+
+        request.save_book_to_database(
+            field_name='file', session=db.session,
+            tables=[Book],
+            initializers=[goodreads_init_func])
+        return redirect(url_for('.handson_table'), code=302)
     return '''
     <!doctype html>
     <title>Upload an excel file</title>
