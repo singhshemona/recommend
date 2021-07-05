@@ -3,6 +3,7 @@ from . import db
 from . import login_manager
 from flask_login import UserMixin
 
+
 bookshelf = db.Table('bookshelf', 
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
     db.Column('book_id', db.Integer, db.ForeignKey('books.id'))
@@ -35,10 +36,7 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    
-
     def __repr__(self):
-        # return f'<User: {self.username}>'  
         return '<User %r>' % self.username
 
 
@@ -46,34 +44,32 @@ class User(UserMixin, db.Model):
 class Book(db.Model):
     __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String)
-    # author_first = db.Column(db.String)
-    # author_last = db.Column(db.String)
+
+    ''' Classify API + DDC Table '''
     classify_DDC = db.Column(db.Float)
     classify_category = db.Column(db.String)
 
     ''' Goodreads info from csv import '''
     book_id = db.Column(db.Integer)
+    title = db.Column(db.String)
     author = db.Column(db.String)
     additional_authors = db.Column(db.String)
     isbn = db.Column(db.String)
-    isbn_13 = db.Column(db.Integer)
-    rating = db.Column(db.Integer)
+    isbn13 = db.Column(db.String)
+    my_rating = db.Column(db.Integer)
     avg_rating = db.Column(db.Float)
     publisher = db.Column(db.String)
     binding = db.Column(db.String)
     pages = db.Column(db.Integer)
-    year_publish = db.Column(db.Date) # Integeer?
-    year_publish_original = db.Column(db.Date) # Integer?
-    date_read = db.Column(db.Date)
-    date_added = db.Column(db.Date)
+    year_publish = db.Column(db.String) # Integer?
+    year_publish_original = db.Column(db.String) # Integer?
+    date_read = db.Column(db.String) # Datetime.date?
+    date_added = db.Column(db.String) # Datetime.date?
     bookshelves = db.Column(db.String)
 
 
-
-
-
+    def __init__(self, title):
+        self.title = title
 
     def __repr__(self):
-        # return f'<Book: {self.title}>'
         return '<Book %r>' % self.title
