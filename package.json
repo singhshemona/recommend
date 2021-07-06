@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nivo/circle-packing": "^0.72.0",
+    "@nivo/core": "^0.72.0",
     "@types/jest": "^24.9.1",
     "@types/node": "^12.19.14",
     "@types/react": "^16.14.2",

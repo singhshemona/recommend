@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Shelf = styled.div`
-  display: flex;
-  overflow: scroll;
+  background: burlywood;
   padding: 10px 20px;
+  border: 1px solid black;
 `
 
 const Book = styled.div`
@@ -21,19 +21,6 @@ const Book = styled.div`
 
 const Class = styled.h2`
   text-align: center;
-  background: burlywood;
-  margin-top: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 42px;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-`
-
-const Title = styled.p`
-  transform: rotate(180deg);
-  writing-mode: vertical-rl;
-  font-weight: bold;
 `
 
 type Props = {
@@ -46,16 +33,14 @@ type Props = {
 
 export const Row = ({ heading, books }: Props) => {
   return (
-    <>
-      <Shelf>
-        {books.map((book) => 
-          <Book>
-            <Title>{book.title}</Title>
-            <p>{book.classify_DDC}</p>
-          </Book> 
-        )} 
-      </Shelf>
+    <Shelf>
+      {books.map((book) => 
+        <Book>
+          {/* <Title>{book.title}</Title>
+          <p>{book.classify_DDC}</p> */}
+        </Book> 
+      )} 
       <Class>{heading}</Class>
-    </>
+    </Shelf>
   );
 }
