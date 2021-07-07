@@ -2,6 +2,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from . import login_manager
 from flask_login import UserMixin
+from flask_serialize import FlaskSerializeMixin
 
 
 bookshelf = db.Table('bookshelf', 
@@ -38,6 +39,13 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+    def to_json(self):
+        json_user = {
+            'username' : self.username,
+            'books' : self.books,
+        }
+        return json_user
 
 
 

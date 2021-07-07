@@ -10,7 +10,10 @@
 
 <ul class="books">
     {% for book in books %}
-        {{ book }}
+        {{ book.title }}
+        {{ book.author }}
+        {{ book.classify_DDC }}
+        {{ book.classify_category }}
     {% endfor %}
     <!-- <h1>Hello!</h1> -->
 </ul>

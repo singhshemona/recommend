@@ -1,10 +1,11 @@
 from flask import render_template, jsonify, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import login_required, current_user
+import flask_excel as excel
 from . import main
 from .. import db
-import flask_excel as excel
 from app.models import Book, User
-from flask_login import login_required, current_user
+import json
 
 @main.route('/')
 def index():
@@ -12,16 +13,32 @@ def index():
     return render_template('index.html')
 
 @main.route('/books/')
-@login_required
 def bookshelf():
+
+
     # user = current_user._get_current_object()
 
     John = User.query.filter_by(username='john').first()
     
     books = John.books.all()
-    return render_template('bookshelf.html', books=books) #returns a list
 
+    # for book in books:
+    #     return jsonify(
+    #         title=book.title,
+    #         author=book.author,
+    #         classify_DDC=book.classify_DDC,
+    #         classify_category=book.classify_category,
+    #     )
 
+    # return render_template('bookshelf.html', books=books) #returns a list
+
+    allbooks = []
+    for book in books:
+        title=book.title,
+        author=book.author,
+        classify_DDC=book.classify_DDC,
+        classify_category=book.classify_category,
+    return jsonify(allbooks)
 
 # jsonify + request imports
 @main.route('/books/upload', methods=['GET', 'POST'])
@@ -87,7 +104,6 @@ def csv_import():
 
 
 @main.route("/handson_view", methods=["GET"])
-@login_required
 def handson_table():
     return excel.make_response_from_a_table(
         session=db.session,
