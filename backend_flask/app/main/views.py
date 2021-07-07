@@ -12,35 +12,19 @@ def index():
     # return '<h1>Home Page</h1>'
     return render_template('index.html')
 
-@main.route('/books/')
-def bookshelf():
+@main.route('/<username>/books/')
+def bookshelf(username):
 
 
-    # user = current_user._get_current_object()
+    user = User.query.filter_by(username=username).first()
+    books = user.books.all()
 
-    John = User.query.filter_by(username='john').first()
-    
-    books = John.books.all()
-
-    # for book in books:
-    #     return jsonify(
-    #         title=book.title,
-    #         author=book.author,
-    #         classify_DDC=book.classify_DDC,
-    #         classify_category=book.classify_category,
-    #     )
+    books_list = [book.serialize() for book in books]
+    return jsonify(books_list)
 
     # return render_template('bookshelf.html', books=books) #returns a list
 
-    allbooks = []
-    for book in books:
-        title=book.title,
-        author=book.author,
-        classify_DDC=book.classify_DDC,
-        classify_category=book.classify_category,
-    return jsonify(allbooks)
 
-# jsonify + request imports
 @main.route('/books/upload', methods=['GET', 'POST'])
 def csv_import():
     if request.method == 'POST':

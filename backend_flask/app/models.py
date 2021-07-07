@@ -40,12 +40,7 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
-    def to_json(self):
-        json_user = {
-            'username' : self.username,
-            'books' : self.books,
-        }
-        return json_user
+
 
 
 
@@ -81,3 +76,12 @@ class Book(db.Model):
 
     def __repr__(self):
         return '<Book %r>' % self.title
+
+    def serialize(self):
+        books_user = {
+            'title' : self.title,
+            'author' : self.author,
+            'classify_DDC' : self.classify_DDC,
+            'classify_category' : self.classify_category,
+        }
+        return books_user
