@@ -7,6 +7,10 @@ from .. import db
 from app.models import Book, User
 import json
 
+from .. import excel
+from wrec import excel_doc
+
+
 @main.route('/')
 def index():
     # return '<h1>Home Page</h1>'
@@ -67,6 +71,7 @@ def csv_import():
             'Bookshelves' : 'bookshelves'        
             }
 
+        # excel_request = excel.ExcelRequest('environ')
         excel.ExcelRequest.isave_to_database(
             field_name="file",
             session=db.session,

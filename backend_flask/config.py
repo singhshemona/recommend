@@ -8,7 +8,7 @@ class Config:
     #     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # calling init_app on the extensions completes their initialization
+    ''' calling init_app on the extensions completes their initialization '''
     @staticmethod
     def init_app(app):
         pass

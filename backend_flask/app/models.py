@@ -41,16 +41,14 @@ class User(UserMixin, db.Model):
         return '<User %r>' % self.username
 
 
-
-
-
 class Book(db.Model):
     __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)
 
     ''' Classify API + DDC Table '''
     classify_DDC = db.Column(db.Float)
-    classify_category = db.Column(db.String)
+    # classify_category = db.Column(db.String) # might not use
+    # ten_category_DDC = db.Column(db.Integer, db.ForeignKey('ten_category_ddcs.id'))
 
     ''' Goodreads info from csv import '''
     book_id = db.Column(db.Integer)
@@ -78,10 +76,18 @@ class Book(db.Model):
         return '<Book %r>' % self.title
 
     def serialize(self):
-        books_user = {
+        book_user = {
             'title' : self.title,
             'author' : self.author,
             'classify_DDC' : self.classify_DDC,
             'classify_category' : self.classify_category,
         }
-        return books_user
+        return book_user
+
+
+# class Ten_Category_DDC(db.Model):
+#     __tablename__ = 'ten_categories_DDC'
+#     id = db.Column(db.Integer, primary_key=True)
+#     call_number = db.Column(db.String)
+#     classification = db.Column(db.String)
+#     books = db.relationship('Book', backref='ten_category_ddc')
