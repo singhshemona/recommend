@@ -8,12 +8,10 @@ import os
 from app import create_app, db
 from app.models import User, Book
 from flask_migrate import Migrate
-import flask_excel as excel
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
 
-excel_doc = excel.init_excel(app)
 
 '''To avoid imporint database instances and models into a shell session'''
 @app.shell_context_processor

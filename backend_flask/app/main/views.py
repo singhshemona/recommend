@@ -1,14 +1,12 @@
 from flask import render_template, jsonify, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_required, current_user
-import flask_excel as excel
 from . import main
 from .. import db
 from app.models import Book, User
-import json
+import flask_excel as excel
 
-from .. import excel
-from wrec import excel_doc
+
 
 
 @main.route('/')
@@ -50,7 +48,15 @@ def csv_import():
             book_instance.date_read = row['date_read']
             book_instance.date_added = row['date_added']
             book_instance.bookshelves = row['bookshelves']
+
+            '''Add rows to User.books'''
+            user = User.query.filter_by(username='john').first()
+            user.books.append(book_instance)
+
+            '''populate Dewey Decimal number'''
+            
             return book_instance
+            
 
         mapdict = {
             'Book Id' : 'book_id',
@@ -72,14 +78,19 @@ def csv_import():
             }
 
         # excel_request = excel.ExcelRequest('environ')
-        excel.ExcelRequest.isave_to_database(
+        request.isave_to_database(
             field_name="file",
             session=db.session,
             table=Book,
             initializer=book_init_func,
             mapdict=mapdict
         )
-        return redirect(url_for(".handson_table"), code=302) #redirect elsewhere
+
+        
+
+
+        return redirect(url_for(".bookshelf", username='john'), code=302) #redirect elsewhere
+
     return """
     <!doctype html>
     <title>Upload an excel file</title>
@@ -96,7 +107,7 @@ def csv_import():
 def handson_table():
     return excel.make_response_from_a_table(
         session=db.session,
-        table=Book,
+        table=Book, 
         file_type="handsontable.html"
     )
 

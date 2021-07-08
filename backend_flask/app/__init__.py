@@ -13,6 +13,7 @@ Flask Configuration Object - Application Factory / Factory Function
 bootstrap = Bootstrap()
 db = SQLAlchemy()
 migrate = Migrate()
+# excel_import = excel.init_excel()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 
@@ -24,6 +25,7 @@ def create_app(config_name):
     bootstrap.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
+    # excel_import.init_excel(app)
     excel.init_excel(app)
 
 

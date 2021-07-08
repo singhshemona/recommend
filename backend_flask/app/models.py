@@ -47,7 +47,7 @@ class Book(db.Model):
 
     ''' Classify API + DDC Table '''
     classify_DDC = db.Column(db.Float)
-    # classify_category = db.Column(db.String) # might not use
+    classify_category = db.Column(db.String) # replace later with 3 other tables
     # ten_category_DDC = db.Column(db.Integer, db.ForeignKey('ten_category_ddcs.id'))
 
     ''' Goodreads info from csv import '''
