@@ -2,6 +2,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from . import login_manager
 from flask_login import UserMixin
+from flask_serialize import FlaskSerializeMixin
+
 
 bookshelf = db.Table('bookshelf', 
     db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
@@ -35,18 +37,57 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    
-
     def __repr__(self):
-        return f'<User: {self.username}>'  
+        return '<User %r>' % self.username
+
+
 class Book(db.Model):
     __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String)
-    author_first = db.Column(db.String)
-    author_last = db.Column(db.String)
+
+    ''' Classify API + DDC Table '''
     classify_DDC = db.Column(db.Float)
-    classify_category = db.Column(db.String)
+    classify_category = db.Column(db.String) # replace later with 3 other tables
+    # ten_category_DDC = db.Column(db.Integer, db.ForeignKey('ten_category_ddcs.id'))
+
+    ''' Goodreads info from csv import '''
+    book_id = db.Column(db.Integer)
+    title = db.Column(db.String)
+    author = db.Column(db.String)
+    additional_authors = db.Column(db.String)
+    isbn = db.Column(db.String)
+    isbn13 = db.Column(db.String)
+    my_rating = db.Column(db.Integer)
+    avg_rating = db.Column(db.Float)
+    publisher = db.Column(db.String)
+    binding = db.Column(db.String)
+    pages = db.Column(db.Integer)
+    year_publish = db.Column(db.String) # Integer?
+    year_publish_original = db.Column(db.String) # Integer?
+    date_read = db.Column(db.String) # Datetime.date?
+    date_added = db.Column(db.String) # Datetime.date?
+    bookshelves = db.Column(db.String)
+
+
+    def __init__(self, title):
+        self.title = title
 
     def __repr__(self):
-        return f'<Book: {self.title}>'
+        return '<Book %r>' % self.title
+
+    def serialize(self):
+        book_user = {
+            'title' : self.title,
+            'author' : self.author,
+            'classify_DDC' : self.classify_DDC,
+            'classify_category' : self.classify_category,
+        }
+        return book_user
+
+
+# class Ten_Category_DDC(db.Model):
+#     __tablename__ = 'ten_categories_DDC'
+#     id = db.Column(db.Integer, primary_key=True)
+#     call_number = db.Column(db.String)
+#     classification = db.Column(db.String)
+#     books = db.relationship('Book', backref='ten_category_ddc')
