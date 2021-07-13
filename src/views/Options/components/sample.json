@@ -1,0 +1,40 @@
+[
+  {
+    "name": "books",
+    "value": 0,
+    "children": [
+      {
+        "name": "literature",
+        "value": 1,
+        "children": [{
+          "name": "Some Title",
+          "loc": 1
+        },
+        {
+          "name": "Test Title",
+          "loc": 1
+        },
+        {
+          "name": "Another Title",
+          "loc": 1
+        }]
+      },
+      {
+        "name": "history",
+        "value": 1,
+        "children": [{
+          "name": "Another Title",
+          "loc": 1
+        }]
+      },
+      {
+        "name": "rest",
+        "value": 1,
+        "children": [{
+          "name": "Yet Another Title",
+          "loc": 1
+        }]
+      }
+    ]
+  }
+]

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import styled from 'styled-components';
-import { ResponsiveCirclePacking } from '@nivo/circle-packing'
+import { ResponsiveCirclePackingCanvas } from '@nivo/circle-packing'
+import sample from './sample.json'
 
 const Container = styled.div`
   height: 700px;
@@ -10,7 +11,7 @@ const Container = styled.div`
 export const BookShelf = () => {
   const [ zoomedId, setZoomedId ] = useState<string | null>(null)
   const [ loading, setLoading ] = useState(false)
-  const [ books, setBooks ] = useState([{
+  const [ data, setData ] = useState([{
     "title": "ultrices mattis odio donec vitae nisi",
     "classify_DDC": 132.174,
   }])
@@ -19,7 +20,7 @@ export const BookShelf = () => {
     axios
       .get("/mockData/")
       .then((res) => {
-        setBooks(res.data)
+        setData(res.data)
         setLoading(false)
       })
       .catch((err) => console.log(err));
@@ -55,57 +56,57 @@ export const BookShelf = () => {
   //   ...rest
   // }
 
-  const data = {
-    id: 'data',
-    value: 0,
-    children: [
-      {
-        id: 'literature',
-        value: 1,
-        children: [{
-          "name": "Book Title",
-          "loc": 1
-        }]
-      },
-      {
-        id: 'history',
-        value: 1,
-        children: [{
-          "name": "Book Title",
-          "loc": 1
-        }]
-      },
-      {
-        id: 'rest',
-        value: 1,
-        children: [{
-          "name": "Book Title",
-          "loc": 1
-        }]
-      }
-    ]
-  }
+  // const data = {
+  //   "name": 'data',
+  //   "value": 0,
+  //   "children": [
+  //     {
+  //       "name": 'literature',
+  //       "value": 1,
+  //       "children": [{
+  //         "name": "Book Title",
+  //         "loc": 1
+  //       }]
+  //     },
+  //     {
+  //       "name": 'history',
+  //       "value": 1,
+  //       "children": [{
+  //         "name": "Book Title",
+  //         "loc": 1
+  //       }]
+  //     },
+  //     {
+  //       "name": 'rest',
+  //       "value": 1,
+  //       "children": [{
+  //         "name": "Book Title",
+  //         "loc": 1
+  //       }]
+  //     }
+  //   ]
+  // }
   
-  books.forEach(book => 
-    {
-      if (book.classify_DDC > 800 && book.classify_DDC < 900) {
-          data.children[0].children.push({
-            "name": book.title,
-            "loc": 1
-          })
-      } else if (book.classify_DDC > 900 && book.classify_DDC < 1000) {
-          data.children[1].children.push({
-            "name": book.title,
-            "loc": 1
-          })
-      } else {
-          data.children[2].children.push({
-            "name": book.title,
-            "loc": 1
-          })
-      }
-    }
-  )
+  // books.forEach(book => 
+  //   {
+  //     if (book.classify_DDC > 800 && book.classify_DDC < 900) {
+  //         data.children[0].children.push({
+  //           "name": book.title,
+  //           "loc": 1
+  //         })
+  //     } else if (book.classify_DDC > 900 && book.classify_DDC < 1000) {
+  //         data.children[1].children.push({
+  //           "name": book.title,
+  //           "loc": 1
+  //         })
+  //     } else {
+  //         data.children[2].children.push({
+  //           "name": book.title,
+  //           "loc": 1
+  //         })
+  //     }
+  //   }
+  // )
 
   return (
     loading ? 
@@ -129,9 +130,9 @@ export const BookShelf = () => {
     // </AllBooks>
 
     // graph MUST be in a parent container of a defined height or else it will not show up
-    <Container> 
-      <ResponsiveCirclePacking
-        data={data}
+    <Container>
+      <ResponsiveCirclePackingCanvas
+        data={sample[0]}
         margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         id="name"
         value="loc"
@@ -140,20 +141,8 @@ export const BookShelf = () => {
         padding={4}
         borderWidth={1}
         borderColor={{ from: 'color', modifiers: [ [ 'darker', 0.5 ] ] }}
-        defs={[
-            {
-                id: 'lines',
-                type: 'patternLines',
-                background: 'none',
-                color: 'inherit',
-                rotation: -45,
-                lineWidth: 5,
-                spacing: 8
-            }
-        ]}
         zoomedId={zoomedId}
         motionConfig="slow"
-        fill={[ { match: { depth: 1 }, id: 'lines' } ]}
         onClick={node => {
           setZoomedId(zoomedId === node.id ? null : node.id)
         }}
