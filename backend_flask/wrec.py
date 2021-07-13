@@ -12,6 +12,8 @@ from flask_migrate import Migrate
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
 
+
+'''To avoid imporint database instances and models into a shell session'''
 @app.shell_context_processor
 def make_shell_context():
     return dict(db=db, User=User, Book=Book)
@@ -24,17 +26,3 @@ def test():
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
 
-
-
-'''
-Routes - not including root
-'''
-
-@app.route('/bookshelf/', methods=['GET', 'POST'])
-def bookshelf_user():
-    # Lisa = User.query.filter_by(username='lisa').first()
-    # all_books = Lisa.books.all()
-
-    # return render_template('bookshelf.html', book=all_books)
-
-    return '<h1>Book Shelf</h1>'
