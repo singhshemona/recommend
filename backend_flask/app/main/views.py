@@ -5,7 +5,13 @@ from . import main
 from .. import db
 from app.models import Book, User
 import flask_excel as excel
-
+import xmltodict, json
+from urllib.request import urlopen
+from urllib.parse import urlencode
+from json2table import convert
+import json
+import os
+import re
 
 
 
@@ -20,6 +26,11 @@ def bookshelf(username):
 
     user = User.query.filter_by(username=username).first()
     books = user.books.all()
+
+    for book_instance in books:
+        if book_instance.isbn:
+            book_instance.classify_DDC = '23423424' #deweyDecimalLink(book_instance.isbn)
+
 
     books_list = [book.serialize() for book in books]
     return jsonify(books_list)
@@ -49,14 +60,18 @@ def csv_import():
             book_instance.date_added = row['date_added']
             book_instance.bookshelves = row['bookshelves']
 
-            '''Add rows to User.books'''
+            '''Add rows to User.books'''        
             user = User.query.filter_by(username='john').first()
             user.books.append(book_instance)
 
-            '''populate Dewey Decimal number'''
+            '''Cleanup ISBN numbers'''        
+            # book_instance.isbn = cleanISBN(book_instance.isbn)
+            # book_instance.isbn13 = cleanISBN(book_instance.isbn13)
+
             
             return book_instance
-            
+
+                     
 
         mapdict = {
             'Book Id' : 'book_id',
@@ -77,18 +92,14 @@ def csv_import():
             'Bookshelves' : 'bookshelves'        
             }
 
-        # excel_request = excel.ExcelRequest('environ')
         request.isave_to_database(
             field_name="file",
             session=db.session,
             table=Book,
             initializer=book_init_func,
             mapdict=mapdict
-        )
-
-        
-
-
+        )      
+          
         return redirect(url_for(".bookshelf", username='john'), code=302) #redirect elsewhere
 
     return """
@@ -113,3 +124,52 @@ def handson_table():
 
 
 
+
+# isbn to Dewey decimal
+@main.route('/dewey/', methods=["GET"])
+def deweyDecimalLink(isbn):
+
+    # user = User.query.filter_by(username='john').first()
+    # sample_book = user.books[1]
+    # isbn = sample_book.isbn
+
+    base = 'http://classify.oclc.org/classify2/Classify?'
+    parmType = 'isbn'
+    parmValue = isbn
+    searchURL = base + parmType + parmValue #urlencode({parmType:parmValue.encode('utf-8')})
+
+        
+    # redirect to OCLC's site to extract XML file of book
+    xmlContent = urlopen(searchURL)
+    xmlFile = xmlContent.read()
+    xmlDict = xmltodict.parse(xmlFile)
+    jsonDumps = json.dumps(xmlDict)
+    jsonContent = json.loads(jsonDumps)
+
+    # items = jsonContent.get("classify").get('works').get('work')
+    base = jsonContent.get("classify").get('editions').get('edition')[0]
+    deweyNumber0 = base.get('classifications').get('class')[0].get('@sfa')
+    deweyNumber1 = base.get('classifications').get('class')[1].get('@sfa')
+    
+    return jsonContent
+
+    regexNumber0 = re.findall("[a-zA-Z]", deweyNumber0)
+    regexNumber1 = re.findall("[a-zA-Z]", deweyNumber1)
+
+    if len(regexNumber0) > 0:
+        deweyNumber = deweyNumber1
+    else:
+        deweyNumber = deweyNumber0
+    # pets_data = open("data.json", "w")
+    # json.dump(xmlDict, pets_data)
+    # pets_data.close()
+
+    return deweyNumber
+
+
+def cleanISBN(isbn):
+    print(isbn)
+    filterISBN = re.findall("[a-zA-Z0-9]", isbn)
+    joinISBN = ('').join(filterISBN)
+
+    return joinISBN

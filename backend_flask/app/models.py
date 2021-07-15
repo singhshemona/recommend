@@ -46,12 +46,12 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     ''' Classify API + DDC Table '''
-    classify_DDC = db.Column(db.Float)
+    classify_DDC = db.Column(db.String)
     classify_category = db.Column(db.String) # replace later with 3 other tables
-    # ten_category_DDC = db.Column(db.Integer, db.ForeignKey('ten_category_ddcs.id'))
+    classify_ten_id = db.Column(db.String, db.ForeignKey('ten_categories_DDC.id'))
 
     ''' Goodreads info from csv import '''
-    book_id = db.Column(db.Integer)
+    book_id = db.Column(db.String)
     title = db.Column(db.String)
     author = db.Column(db.String)
     additional_authors = db.Column(db.String)
@@ -81,13 +81,15 @@ class Book(db.Model):
             'author' : self.author,
             'classify_DDC' : self.classify_DDC,
             'classify_category' : self.classify_category,
+            'isbn' : self.isbn,
+            'isbn13' : self.isbn13
         }
         return book_user
 
 
-# class Ten_Category_DDC(db.Model):
-#     __tablename__ = 'ten_categories_DDC'
-#     id = db.Column(db.Integer, primary_key=True)
-#     call_number = db.Column(db.String)
-#     classification = db.Column(db.String)
-#     books = db.relationship('Book', backref='ten_category_ddc')
+class Ten_Categories_DDC(db.Model):
+    __tablename__ = 'ten_categories_DDC'
+    id = db.Column(db.Integer, primary_key=True)
+    call_number = db.Column(db.String)
+    classification = db.Column(db.String)
+    books = db.relationship('Book', backref='classify_ten')
