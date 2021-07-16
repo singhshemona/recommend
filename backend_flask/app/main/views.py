@@ -132,79 +132,98 @@ def deweyDecimalLink():
 
     bookList = []
     user = User.query.filter_by(username='john').first()
-    # for book in user.books:
-    #     if book.isbn is None:
-    #         continue
-    #     else:
-    #         isbn = book.isbn
+    for book in user.books:
+        if book.isbn is None:
+            continue
+        else:
+            isbn = book.isbn
 
-        
-    sample_book = user.books[4]
-    isbn = sample_book.isbn
-
-
-    return isbn
-    '''Classify API from ISBN -> JSON of book'''
-    base = 'http://classify.oclc.org/classify2/Classify?'
-    parmType = 'isbn'
-    parmValue = isbn
-    searchURL = base + urlencode({parmType:parmValue.encode('utf-8')})
-
-            
-    xmlContent = urlopen(searchURL)
-    xmlFile = xmlContent.read()
-    xmlDict = xmltodict.parse(xmlFile)
-    jsonDumps = json.dumps(xmlDict)
-    jsonContentISBN = json.loads(jsonDumps)
-
-    # try:
-
-    #     isbnDirect = isbnDewey(jsonContentISBN)
-    #     # bookList.append(isbnDirect) 
-    # except AttributeError:
-    #     jsonContentOWI = owiDewey(jsonContentISBN)
-    #     isbnOWI = isbnDewey(jsonContentOWI)
-    #     # bookList.append(isbnOWI)
-        
-    # return jsonify(bookList)
+    # sample_book = user.books[4]
+    # isbn13 = sample_book.isbn13
+    # isbn = sample_book.isbn
 
 
+
+
+        '''Classify API from ISBN -> JSON of book'''
+        base = 'http://classify.oclc.org/classify2/Classify?'
+        parmType = 'isbn'
+        parmValue = isbn
+        searchURL = base + urlencode({parmType:parmValue.encode('utf-8')})
+
+                
+        xmlContent = urlopen(searchURL)
+        xmlFile = xmlContent.read()
+        xmlDict = xmltodict.parse(xmlFile)
+        jsonDumps = json.dumps(xmlDict)
+        jsonContentISBN = json.loads(jsonDumps)
+
+        # if jsonContentISBN.get("classify"):
+        #     base = jsonContentISBN.get("classify")
+        #     bookList.append(base)
+        # else:
+        #     empty = []
+        #     bookList.append(empty)
+
+        try:
+
+            isbnDirect = isbnDewey(jsonContentISBN)
+
+            bookList.append(isbnDirect) 
+            print(isbnDirect)
+            # return isbnDirect
+        except AttributeError:
+            jsonContentOWI = owiDewey(jsonContentISBN)
+            isbnOWI = isbnDewey(jsonContentOWI)
+            bookList.append(isbnOWI)
+            print(isbnOWI)
+            # return isbnOWI
+
+    print(bookList)    
+    return jsonify(bookList)
+
+    
 
 
 '''Helper functions for above'''
 def isbnDewey(jsonContentISBN):
     
 
-    base = jsonContentISBN.get("classify").get('editions').get('edition')[0]
+    try:
+        jsonContentISBN.get("classify").get('editions').get('edition')[0]
 
-    if base.get('classifications').get('class') == list:
-        deweyNumber0 = base.get('classifications').get('class')[0].get('@sfa')
-        deweyNumber1 = base.get('classifications').get('class')[1].get('@sfa')
-    else:
+    # if base.get('classifications').get('class') == list:
+        deweyNumber = '9876'
+        # deweyNumber0 = base.get('classifications').get('class')[0].get('@sfa')
+        # deweyNumber1 = base.get('classifications').get('class')[1].get('@sfa')
 
-        deweyNumber0 = base.get('classifications').get('class').get('@sfa')
+        # regexNumber0 = re.findall("[a-zA-Z]", deweyNumber0)
+        # regexNumber1 = re.findall("[a-zA-Z]", deweyNumber1)
+
+        # if len(regexNumber0) > 0:
+        #     deweyNumber = deweyNumber1
+        # else:
+        #     deweyNumber = deweyNumber0
+
+
+
+    except:
+    # else:
+        # return jsonify(base.get('classifications').get('class'))
+        deweyNumber = '1234' #base.get('classifications').get('class').get('@sfa')
         
 
 
-    regexNumber0 = re.findall("[a-zA-Z]", deweyNumber0)
-    regexNumber1 = re.findall("[a-zA-Z]", deweyNumber1)
-
-    if len(regexNumber0) > 0:
-        deweyNumber = deweyNumber1
-    else:
-        deweyNumber = deweyNumber0
         # pets_data = open("data.json", "w")
         # json.dump(xmlDict, pets_data)
         # pets_data.close()
 
 
-    print (deweyNumber)
     return deweyNumber
 
 def owiDewey(jsonContentISBN):
 
-    return jsonContentISBN
-
+    return '654'
     owi = jsonContentISBN.get("classify").get("works").get('work')[0].get('@owi')
 
     base = 'http://classify.oclc.org/classify2/Classify?'
