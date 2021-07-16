@@ -28,9 +28,10 @@ def bookshelf(username):
     books = user.books.all()
 
     for book_instance in books:
-        if book_instance.isbn:
-            book_instance.classify_DDC = '23423424' #deweyDecimalLink(book_instance.isbn)
-
+        if book_instance.isbn is None:
+            continue
+        else:
+            book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn)
 
     books_list = [book.serialize() for book in books]
     return jsonify(books_list)
@@ -127,31 +128,63 @@ def handson_table():
 
 # isbn to Dewey decimal
 @main.route('/dewey/', methods=["GET"])
-def deweyDecimalLink(isbn):
+def deweyDecimalLink():
 
-    # user = User.query.filter_by(username='john').first()
-    # sample_book = user.books[1]
-    # isbn = sample_book.isbn
+    bookList = []
+    user = User.query.filter_by(username='john').first()
+    # for book in user.books:
+    #     if book.isbn is None:
+    #         continue
+    #     else:
+    #         isbn = book.isbn
 
+        
+    sample_book = user.books[4]
+    isbn = sample_book.isbn
+
+
+    return isbn
+    '''Classify API from ISBN -> JSON of book'''
     base = 'http://classify.oclc.org/classify2/Classify?'
     parmType = 'isbn'
     parmValue = isbn
-    searchURL = base + parmType + parmValue #urlencode({parmType:parmValue.encode('utf-8')})
+    searchURL = base + urlencode({parmType:parmValue.encode('utf-8')})
 
-        
-    # redirect to OCLC's site to extract XML file of book
+            
     xmlContent = urlopen(searchURL)
     xmlFile = xmlContent.read()
     xmlDict = xmltodict.parse(xmlFile)
     jsonDumps = json.dumps(xmlDict)
-    jsonContent = json.loads(jsonDumps)
+    jsonContentISBN = json.loads(jsonDumps)
 
-    # items = jsonContent.get("classify").get('works').get('work')
-    base = jsonContent.get("classify").get('editions').get('edition')[0]
-    deweyNumber0 = base.get('classifications').get('class')[0].get('@sfa')
-    deweyNumber1 = base.get('classifications').get('class')[1].get('@sfa')
+    # try:
+
+    #     isbnDirect = isbnDewey(jsonContentISBN)
+    #     # bookList.append(isbnDirect) 
+    # except AttributeError:
+    #     jsonContentOWI = owiDewey(jsonContentISBN)
+    #     isbnOWI = isbnDewey(jsonContentOWI)
+    #     # bookList.append(isbnOWI)
+        
+    # return jsonify(bookList)
+
+
+
+
+'''Helper functions for above'''
+def isbnDewey(jsonContentISBN):
     
-    return jsonContent
+
+    base = jsonContentISBN.get("classify").get('editions').get('edition')[0]
+
+    if base.get('classifications').get('class') == list:
+        deweyNumber0 = base.get('classifications').get('class')[0].get('@sfa')
+        deweyNumber1 = base.get('classifications').get('class')[1].get('@sfa')
+    else:
+
+        deweyNumber0 = base.get('classifications').get('class').get('@sfa')
+        
+
 
     regexNumber0 = re.findall("[a-zA-Z]", deweyNumber0)
     regexNumber1 = re.findall("[a-zA-Z]", deweyNumber1)
@@ -160,13 +193,35 @@ def deweyDecimalLink(isbn):
         deweyNumber = deweyNumber1
     else:
         deweyNumber = deweyNumber0
-    # pets_data = open("data.json", "w")
-    # json.dump(xmlDict, pets_data)
-    # pets_data.close()
+        # pets_data = open("data.json", "w")
+        # json.dump(xmlDict, pets_data)
+        # pets_data.close()
 
+
+    print (deweyNumber)
     return deweyNumber
 
+def owiDewey(jsonContentISBN):
 
+    return jsonContentISBN
+
+    owi = jsonContentISBN.get("classify").get("works").get('work')[0].get('@owi')
+
+    base = 'http://classify.oclc.org/classify2/Classify?'
+    parmType1 = 'owi'
+    parmValue1 = owi
+    searchURL = base + urlencode({parmType1:parmValue1.encode('utf-8')})
+
+    # redirect to OCLC's site to extract XML file of book
+    xmlContent = urlopen(searchURL)
+    xmlFile = xmlContent.read()
+    xmlDict = xmltodict.parse(xmlFile)
+    jsonDumps = json.dumps(xmlDict)
+    jsonContentOWI = json.loads(jsonDumps)
+
+    return jsonContentOWI
+
+   
 def cleanISBN(isbn):
     print(isbn)
     filterISBN = re.findall("[a-zA-Z0-9]", isbn)
