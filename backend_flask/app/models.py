@@ -80,7 +80,7 @@ class Book(db.Model):
             'title' : self.title,
             'author' : self.author,
             'classify_DDC' : self.classify_DDC,
-            'classify_category' : self.classify_category,
+            'classify_ten_id' : self.classify_ten_id,
             'isbn' : self.isbn,
             'isbn13' : self.isbn13
         }
