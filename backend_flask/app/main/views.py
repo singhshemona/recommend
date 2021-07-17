@@ -20,11 +20,12 @@ def index():
     # return '<h1>Home Page</h1>'
     return render_template('index.html')
 
-@main.route('/<username>/books/')
-def bookshelf(username):
+# @main.route('/<username>/books/')
+@main.route('/books/')
+def bookshelf():
 
 
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username='john').first()
     books = user.books.all()
 
     for book_instance in books:
