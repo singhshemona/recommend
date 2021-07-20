@@ -142,7 +142,7 @@ def handson_table():
 def deweyDecimalLink(isbn):
 
     # user = User.query.filter_by(username='john').first()
-    # sample_book = user.books.filter_by(id=60).first() # The Library Book
+    # sample_book = user.books.filter_by(id=5).first() # The Library Book
     # print(sample_book.title)
 
     # isbn = sample_book.isbn
@@ -175,7 +175,11 @@ def deweyDecimalLink(isbn):
     xmlContent = urlopen(searchURL)
     xmlFile = xmlContent.read()
     xmlDict = xmltodict.parse(xmlFile)
+        
+        
     jsonDumps = json.dumps(xmlDict)
+    with open (f'app/externalFiles/isbn-user-john.json', 'w') as f:
+        f.write(jsonDumps)
     jsonContentISBN = json.loads(jsonDumps)
 
     # return jsonContentISBN
