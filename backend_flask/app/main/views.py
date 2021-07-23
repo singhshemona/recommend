@@ -17,7 +17,6 @@ import re
 
 @main.route('/')
 def index():
-    # return '<h1>Home Page</h1>'
     return render_template('index.html')
 
 # @main.route('/<username>/books/')
