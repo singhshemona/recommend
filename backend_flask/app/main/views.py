@@ -306,24 +306,24 @@ def csv_import_ten_categories():
 
 
 
-    # Not using anymore
-    def findTenCategoryJson(deweyNumber):
-        deweyMapping = {
-            '0' : 'Computer science, information & general works',
-            '1' : 'Philosophy & psychology',
-            '2' : 'Religion',
-            '3' : 'Social sciences',
-            '4' : 'Language',
-            '5' : 'Science',
-            '6' : 'Technology',
-            '7' : 'Arts & recreation',
-            '8' : 'Literature',
-            '9' : 'History & geography',
-            # 'm' : 'missing',
-        }
+# Not using anymore
+def findTenCategoryJson(deweyNumber):
+    deweyMapping = {
+        '0' : 'Computer science, information & general works',
+        '1' : 'Philosophy & psychology',
+        '2' : 'Religion',
+        '3' : 'Social sciences',
+        '4' : 'Language',
+        '5' : 'Science',
+        '6' : 'Technology',
+        '7' : 'Arts & recreation',
+        '8' : 'Literature',
+        '9' : 'History & geography',
+        # 'm' : 'missing',
+    }
 
-        firstNum = deweyNumber[0]
-        if firstNum not in deweyMapping:
-            return 'not included'
-        else:
-            return deweyMapping[firstNum]
+    firstNum = deweyNumber[0]
+    if firstNum not in deweyMapping:
+        return 'not included'
+    else:
+        return deweyMapping[firstNum]
