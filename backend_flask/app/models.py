@@ -93,3 +93,10 @@ class Ten_Categories_DDC(db.Model):
     call_number = db.Column(db.String)
     classification = db.Column(db.String)
     books = db.relationship('Book', backref='classify_ten')
+
+    def to_json(self):
+        books = {
+            'call_number' : self.call_number,
+            'classification' : self.classification,
+            'books' : self.books
+        }
