@@ -87,7 +87,7 @@ class Book(db.Model):
         return book_user
 
 
-class Ten_Categories_DDC(db.Model):
+class Ten_Categories(db.Model):
     __tablename__ = 'ten_categories_DDC'
     id = db.Column(db.Integer, primary_key=True)
     call_number = db.Column(db.String)
@@ -100,3 +100,4 @@ class Ten_Categories_DDC(db.Model):
             'classification' : self.classification,
             'books' : self.books
         }
+        return books
