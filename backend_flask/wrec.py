@@ -6,17 +6,17 @@
 
 import os
 from app import create_app, db
-from app.models import User, Book
+from app.models import User, Book, Ten_Categories
 from flask_migrate import Migrate
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
 
 
-'''To avoid imporint database instances and models into a shell session'''
+'''To avoid importing database instances and models into a shell session'''
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, User=User, Book=Book)
+    return dict(db=db, User=User, Book=Book, Ten_Categories=Ten_Categories)
 
 
 @app.cli.command()

@@ -94,10 +94,11 @@ class Ten_Categories(db.Model):
     classification = db.Column(db.String)
     books = db.relationship('Book', backref='classify_ten')
 
+
     def to_json(self):
         books = {
             'call_number' : self.call_number,
             'classification' : self.classification,
-            'books' : self.books
+            'books' : [book.title for book in self.books]
         }
         return books

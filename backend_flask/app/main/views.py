@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_required, current_user
 from . import main
 from .. import db
-from app.models import Book, User, Ten_Categories_DDC
+from app.models import Book, User, Ten_Categories
 import flask_excel as excel
 import xmltodict, json
 from urllib.request import urlopen
@@ -40,7 +40,16 @@ def viewCategories():
     user = User.query.filter_by(username='john').first()
     books = user.books.all()
 
-    books_within_categories = [category.to_json() for category in books]
+    for book_instance in books:
+        book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn)
+        book_instance.classify_ten_id = deweyToCategory(book_instance.classify_DDC)
+        if book_instance.classify_ten_id is not None:
+            category_obj = Ten_Categories.query.filter_by(classification=book_instance.classify_ten_id).first()
+            category_obj.books.append(book_instance)
+            # print(category_obj)
+
+
+    books_within_categories = [category.to_json() for category in Ten_Categories.query.all()]
     return jsonify(books_within_categories)
 
 @main.route('/books/upload', methods=['GET', 'POST'])
@@ -215,39 +224,18 @@ def owiDewey(jsonContentISBN):
 
     return jsonContentOWI
 
+
+
 def deweyToCategory(deweyNumber):
     '''Find the corresponding Category title'''
 
-    #  '''Add rows to User.books'''        
-    # user = User.query.filter_by(username='john').first()
-    # user.books.append(book_instance)
-
-    # category_instance = Ten_Categories_DDC()
-
     firstNum = deweyNumber[0]
+    for category in Ten_Categories.query.all():
+        if firstNum == category.call_number[0]:
+            return category.classification
+        # return "no dewey number provided"
 
-    # for category in Ten_Categories_DDC.query.all():
-    #     if firstNum == category.call_number[0]
 
-
-    deweyMapping = {
-        '0' : 'Computer science, information & general works',
-        '1' : 'Philosophy & psychology',
-        '2' : 'Religion',
-        '3' : 'Social sciences',
-        '4' : 'Language',
-        '5' : 'Science',
-        '6' : 'Technology',
-        '7' : 'Arts & recreation',
-        '8' : 'Literature',
-        '9' : 'History & geography',
-        # 'm' : 'missing',
-    }
-
-    if firstNum not in deweyMapping:
-        return 'not included'
-    else:
-        return deweyMapping[firstNum]
 
 
 def cleanISBN(isbn):
@@ -271,7 +259,7 @@ def csv_import_ten_categories():
     if request.method == 'POST':
 
         def category_init_func(row):
-            category_instance = Ten_Categories_DDC()
+            category_instance = Ten_Categories()
             category_instance.call_number = row['call_number']
             category_instance.classification = row['classification']
 
@@ -287,7 +275,7 @@ def csv_import_ten_categories():
         request.isave_to_database(
             field_name="file",
             session=db.session,
-            table=Ten_Categories_DDC,
+            table=Ten_Categories,
             initializer=category_init_func,
             mapdict=mapdict
         )      
@@ -305,7 +293,7 @@ def csv_import_ten_categories():
 
 
 
-
+# --------------------------------------------------------------------
 # Not using anymore
 def findTenCategoryJson(deweyNumber):
     deweyMapping = {
