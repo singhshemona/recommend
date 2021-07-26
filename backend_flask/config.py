@@ -28,10 +28,26 @@ class ProductionConfig(Config):
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
 
+
+'''logging of lesser messages'''
+class HerokuConfig(ProductionConfig):
+    @classmethod
+    def init_app(cls, app):
+        ProductionConfig.init_app(app)
+
+        # # log to stderr
+        # import logging
+        # from logging import StreamHandler
+        # file_handler = StreamHandler()
+        # file_handler.setLevel(logging.INFO)
+        # app.logger.addhandler(file_handler)
+
+
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
+    'heroku' : HerokuConfig,
 
     'default': DevelopmentConfig
 }
