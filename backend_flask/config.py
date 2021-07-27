@@ -13,8 +13,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    # SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
 
 class TestingConfig(Config):
@@ -35,12 +35,12 @@ class HerokuConfig(ProductionConfig):
     def init_app(cls, app):
         ProductionConfig.init_app(app)
 
-        # # log to stderr
-        # import logging
-        # from logging import StreamHandler
-        # file_handler = StreamHandler()
-        # file_handler.setLevel(logging.INFO)
-        # app.logger.addhandler(file_handler)
+        # log to stderr
+        import logging
+        from logging import StreamHandler
+        file_handler = StreamHandler()
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
 
 
 config = {
