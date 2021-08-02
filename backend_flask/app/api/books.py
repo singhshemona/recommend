@@ -14,7 +14,7 @@ import re
 
 
 
-
+# http://127.0.0.1:5000/api/v1/books/upload
 @api.route('/books/upload', methods=['GET', 'POST'])
 def csv_import():
     if request.method == 'POST':
@@ -25,9 +25,7 @@ def csv_import():
             book_instance.isbn = row['isbn']
             book_instance.isbn13 = row['isbn13']
         
-            '''Dewey Number + Category'''        
-            # book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn)
-            # book_instance.classify_ten_id = findTenCategory(book_instance.classify_DDC)
+            
             
             '''Cleanup ISBN numbers'''        
             # book_instance.isbn = cleanISBN(book_instance.isbn)
@@ -38,7 +36,6 @@ def csv_import():
             user.books.append(book_instance)
         
             return book_instance
-
                      
         mapdict = {
             'Title' : 'title',
@@ -55,7 +52,20 @@ def csv_import():
             mapdict=mapdict
         )      
           
-        return redirect(url_for(".bookshelf", username='john'), code=302) #redirect elsewhere
+        '''Dewey Number + Category'''  
+        user = User.query.filter_by(username='john').first()
+        books = user.books.all()
+        for book_instance in books:      
+            book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn)            
+            book_instance.classify_ten_id = deweyToCategory(book_instance.classify_DDC)
+            if book_instance.classify_ten_id is not None:
+                category_obj = Ten_Categories.query.filter_by(classification=book_instance.classify_ten_id).first()
+                category_obj.books.append(book_instance)
+                db.session.add(category_obj)
+            db.session.add(book_instance)
+            db.session.commit()
+
+        return redirect(url_for("main.viewCategories", username='john'), code=302) #redirect elsewhere
 
     return """
     <!doctype html>
@@ -69,13 +79,14 @@ def csv_import():
     # return render_template('bookshelf.html')
 
 
-@api.route("/handson_view", methods=["GET"])
-def handson_table():
-    return excel.make_response_from_a_table(
-        session=db.session,
-        table=Book, 
-        file_type="handsontable.html"
-    )
+# # Most likely not use
+# @api.route("/handson_view", methods=["GET"])
+# def handson_table():
+#     return excel.make_response_from_a_table(
+#         session=db.session,
+#         table=Book, 
+#         file_type="handsontable.html"
+#     )
 
 
 
@@ -111,6 +122,8 @@ def deweyDecimalLink(isbn):
             jsonContentOWI = owiDewey(jsonContentISBN)
             isbnOWI = isbnDewey(jsonContentOWI)
             return isbnOWI
+        # except UnboundLocalError:
+        #     return "No jsonContentOWI"
         
         try:
             isbnDirect = isbnDewey(jsonContentISBN)
