@@ -1,16 +1,7 @@
 from flask import render_template, jsonify, request, url_for, redirect
-# from flask_sqlalchemy import SQLAlchemy
 from . import main
 from .. import db
 from app.models import Book, User, Ten_Categories
-# import flask_excel as excel
-# import xmltodict, json
-# from urllib.request import urlopen
-# from urllib.parse import urlencode
-# from json2table import convert
-# import json
-# import os
-# import re
 from ..api.books import deweyDecimalLink, deweyToCategory
 
 
@@ -27,12 +18,7 @@ def viewBooks():
     user = User.query.filter_by(username='john').first()
     books = user.books.all()
 
-    for book_instance in books:
-        book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn)
-        book_instance.classify_ten_id = deweyToCategory(book_instance.classify_DDC)
-
     books_list = [book.serialize() for book in books]
-
     return jsonify(books_list)
 
 @main.route('/books')
@@ -40,12 +26,6 @@ def viewCategories():
 
     user = User.query.filter_by(username='john').first()
     books = user.books.all()
-
-
-    if book_instance.classify_ten_id is not None:
-        category_obj = Ten_Categories.query.filter_by(classification=book_instance.classify_ten_id).first()
-        category_obj.books.append(book_instance)
-
 
     books_within_categories = [category.to_json() for category in Ten_Categories.query.all()]
     return jsonify(books_within_categories)
