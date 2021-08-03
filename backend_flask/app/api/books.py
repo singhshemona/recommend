@@ -56,8 +56,8 @@ def csv_import():
         user = User.query.filter_by(username='john').first()
         books = user.books.all()
         for book_instance in books:      
-            book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn)            
-            book_instance.classify_ten_id = deweyToCategory(book_instance.classify_DDC)
+            book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn)
+            book_instance.classify_ten_id = deweyToCategory(book_instance.classify_DDC)           
             if book_instance.classify_ten_id is not None:
                 category_obj = Ten_Categories.query.filter_by(classification=book_instance.classify_ten_id).first()
                 category_obj.books.append(book_instance)

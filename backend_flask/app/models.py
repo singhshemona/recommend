@@ -49,6 +49,8 @@ class Book(db.Model):
     classify_DDC = db.Column(db.String)
     classify_category = db.Column(db.String) # replace later with 3 other tables
     classify_ten_id = db.Column(db.String, db.ForeignKey('ten_categories_DDC.id'))
+    classify_hundred_id = db.Column(db.String, db.ForeignKey('hundred_categories_DDC.id'))
+    classify_thousand_id = db.Column(db.String, db.ForeignKey('thousand_categories_DDC.id'))
 
     ''' Goodreads info from csv import '''
     book_id = db.Column(db.String)
@@ -81,6 +83,8 @@ class Book(db.Model):
             'author' : self.author,
             'classify_DDC' : self.classify_DDC,
             'classify_ten_id' : self.classify_ten_id,
+            'classify_hundred_id' : self.classify_hundred_id,
+            'classify_thousand_id' : self.classify_thousand_id,
             'isbn' : self.isbn,
             'isbn13' : self.isbn13
         }
@@ -93,6 +97,38 @@ class Ten_Categories(db.Model):
     call_number = db.Column(db.String)
     classification = db.Column(db.String)
     books = db.relationship('Book', backref='classify_ten')
+
+
+    def to_json(self):
+        books = {
+            'call_number' : self.call_number,
+            'classification' : self.classification,
+            'books' : [book.title for book in self.books]
+        }
+        return books
+
+class Hundred_Categories(db.Model):
+    __tablename__ = 'hundred_categories_DDC'
+    id = db.Column(db.Integer, primary_key=True)
+    call_number = db.Column(db.String)
+    classification = db.Column(db.String)
+    books = db.relationship('Book', backref='classify_hundred')
+
+
+    def to_json(self):
+        books = {
+            'call_number' : self.call_number,
+            'classification' : self.classification,
+            'books' : [book.title for book in self.books]
+        }
+        return books
+
+class Thousand_Categories(db.Model):
+    __tablename__ = 'thousand_categories_DDC'
+    id = db.Column(db.Integer, primary_key=True)
+    call_number = db.Column(db.String)
+    classification = db.Column(db.String)
+    books = db.relationship('Book', backref='classify_thousand')
 
 
     def to_json(self):
