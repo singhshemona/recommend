@@ -48,9 +48,9 @@ class Book(db.Model):
     ''' Classify API + DDC Table '''
     classify_DDC = db.Column(db.String)
     classify_category = db.Column(db.String) # replace later with 3 other tables
-    classify_ten_id = db.Column(db.String, db.ForeignKey('ten_categories_DDC.id'))
-    classify_hundred_id = db.Column(db.String, db.ForeignKey('hundred_categories_DDC.id'))
-    classify_thousand_id = db.Column(db.String, db.ForeignKey('thousand_categories_DDC.id'))
+    classify_ten_id = db.Column(db.Integer, db.ForeignKey('ten_categories_DDC.id')) # All 3 below were strings, forced to convert
+    classify_hundred_id = db.Column(db.Integer, db.ForeignKey('hundred_categories_DDC.id'))
+    classify_thousand_id = db.Column(db.Integer, db.ForeignKey('thousand_categories_DDC.id'))
 
     ''' Goodreads info from csv import '''
     book_id = db.Column(db.String)
@@ -94,7 +94,7 @@ class Book(db.Model):
 class Ten_Categories(db.Model):
     __tablename__ = 'ten_categories_DDC'
     id = db.Column(db.Integer, primary_key=True)
-    call_number = db.Column(db.String)
+    call_number = db.Column(db.String) # Should be a different data type
     classification = db.Column(db.String)
     books = db.relationship('Book', backref='classify_ten')
 
