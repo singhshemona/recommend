@@ -56,16 +56,17 @@ def csv_import():
         user = User.query.filter_by(username='john').first()
         books = user.books.all()
         for book_instance in books:      
-            book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn)
-            book_instance.classify_ten_id = deweyToCategory(book_instance.classify_DDC)           
+            book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn) # 800
+            book_instance.classify_ten_id = deweyToCategory(book_instance.classify_DDC) # Literature          
             if book_instance.classify_ten_id is not None:
-                category_obj = Ten_Categories.query.filter_by(classification=book_instance.classify_ten_id).first()
+                category_obj = Ten_Categories.query.filter_by(id=book_instance.classify_ten_id).first()
                 category_obj.books.append(book_instance)
                 db.session.add(category_obj)
+                db.session.commit()
             db.session.add(book_instance)
             db.session.commit()
 
-        return redirect(url_for("main.viewCategories", username='john'), code=302) #redirect elsewhere
+        return redirect(url_for("main.viewBooks", username='john'), code=302) #redirect elsewhere
 
     return """
     <!doctype html>
@@ -208,10 +209,11 @@ def owiDewey(jsonContentISBN):
 def deweyToCategory(deweyNumber):
     '''Find the corresponding Category title'''
 
+    # deweyFloat = float(deweyNumber)
     firstNum = deweyNumber[0]
     for category in Ten_Categories.query.all():
         if firstNum == category.call_number[0]:
-            return category.classification
+            return category.id
         # return "no dewey number provided"
 
 
@@ -228,3 +230,12 @@ def cleanISBN(isbn):
 def addingFakeDewey(isbn):
 
     return 'testing fake dewey'
+
+
+
+
+
+
+errorValues = {
+
+}
