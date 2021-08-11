@@ -1,5 +1,5 @@
 from flask import request, redirect, url_for
-from app.models import Book, User, Ten_Categories
+from app.models import Book, User, Ten_Categories, Hundred_Categories, Thousand_Categories
 from . import api
 from .. import db
 import flask_excel as excel
@@ -57,12 +57,26 @@ def csv_import():
         books = user.books.all()
         for book_instance in books:      
             book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn) # 800
-            book_instance.classify_ten_id = deweyToCategory(book_instance.classify_DDC) # Literature          
+            book_instance.classify_ten_id = deweyToCategoryTen(book_instance.classify_DDC) # Literature          
+            book_instance.classify_hundred_id = deweyToCategoryHundred(book_instance.classify_DDC) # Literature          
+            book_instance.classify_thousand_id = deweyToCategoryThousand(book_instance.classify_DDC) # Literature          
             if book_instance.classify_ten_id is not None:
                 category_obj = Ten_Categories.query.filter_by(id=book_instance.classify_ten_id).first()
                 category_obj.books.append(book_instance)
                 db.session.add(category_obj)
                 db.session.commit()
+            if book_instance.classify_hundred_id is not None:
+                category_obj = Hundred_Categories.query.filter_by(id=book_instance.classify_hundred_id).first()
+                category_obj.books.append(book_instance)
+                db.session.add(category_obj)
+                db.session.commit()
+            if book_instance.classify_thousand_id is not None:
+                category_obj = Thousand_Categories.query.filter_by(id=book_instance.classify_thousand_id).first()
+                category_obj.books.append(book_instance)
+                db.session.add(category_obj)
+                db.session.commit()
+
+
             db.session.add(book_instance)
             db.session.commit()
 
@@ -206,13 +220,24 @@ def owiDewey(jsonContentISBN):
 
 
 
-def deweyToCategory(deweyNumber):
+def deweyToCategoryTen(deweyNumber):
     '''Find the corresponding Category title'''
-
     # deweyFloat = float(deweyNumber)
-    firstNum = deweyNumber[0]
+    firstNum_ten = deweyNumber[0]
     for category in Ten_Categories.query.all():
-        if firstNum == category.call_number[0]:
+        if firstNum_ten == category.call_number[0]:
+            return category.id
+
+def deweyToCategoryHundred(deweyNumber):
+    firstNum_hundred = deweyNumber[0:2]
+    for category in Hundred_Categories.query.all():
+        if firstNum_hundred == category.call_number[0:2]:
+            return category.id
+
+def deweyToCategoryThousand(deweyNumber):
+    firstNum_thousand = deweyNumber[0:3]
+    for category in Thousand_Categories.query.all():
+        if firstNum_thousand == category.call_number[0:3]:
             return category.id
         # return "no dewey number provided"
 

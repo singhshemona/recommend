@@ -46,11 +46,11 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     ''' Classify API + DDC Table '''
-    classify_DDC = db.Column(db.String)
+    classify_ddc = db.Column(db.String)
     classify_category = db.Column(db.String) # replace later with 3 other tables
-    classify_ten_id = db.Column(db.Integer, db.ForeignKey('ten_categories_DDC.id')) # All 3 below were strings, forced to convert
-    classify_hundred_id = db.Column(db.Integer, db.ForeignKey('hundred_categories_DDC.id'))
-    classify_thousand_id = db.Column(db.Integer, db.ForeignKey('thousand_categories_DDC.id'))
+    classify_ten_id = db.Column(db.Integer, db.ForeignKey('ten_categories_ddc.id')) # All 3 below were strings, forced to convert
+    classify_hundred_id = db.Column(db.Integer, db.ForeignKey('hundred_categories_ddc.id'))
+    classify_thousand_id = db.Column(db.Integer, db.ForeignKey('thousand_categories_ddc.id'))
 
     ''' Goodreads info from csv import '''
     book_id = db.Column(db.String)
@@ -81,7 +81,7 @@ class Book(db.Model):
         book_user = {
             'title' : self.title,
             'author' : self.author,
-            'classify_DDC' : self.classify_DDC,
+            'classify_DDC' : self.classify_ddc,
             'classify_ten_id' : self.classify_ten_id,
             'classify_hundred_id' : self.classify_hundred_id,
             'classify_thousand_id' : self.classify_thousand_id,
@@ -92,7 +92,7 @@ class Book(db.Model):
 
 
 class Ten_Categories(db.Model):
-    __tablename__ = 'ten_categories_DDC'
+    __tablename__ = 'ten_categories_ddc'
     id = db.Column(db.Integer, primary_key=True)
     call_number = db.Column(db.String) # Should be a different data type
     classification = db.Column(db.String)
@@ -108,7 +108,7 @@ class Ten_Categories(db.Model):
         return books
 
 class Hundred_Categories(db.Model):
-    __tablename__ = 'hundred_categories_DDC'
+    __tablename__ = 'hundred_categories_ddc'
     id = db.Column(db.Integer, primary_key=True)
     call_number = db.Column(db.String)
     classification = db.Column(db.String)
@@ -124,7 +124,7 @@ class Hundred_Categories(db.Model):
         return books
 
 class Thousand_Categories(db.Model):
-    __tablename__ = 'thousand_categories_DDC'
+    __tablename__ = 'thousand_categories_ddc'
     id = db.Column(db.Integer, primary_key=True)
     call_number = db.Column(db.String)
     classification = db.Column(db.String)
