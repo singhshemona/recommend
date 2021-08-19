@@ -5,12 +5,62 @@ from app.models import Book, User, Ten_Categories, Hundred_Categories, Thousand_
 from ..api.books import deweyDecimalLink, deweyToCategoryTen, deweyToCategoryHundred, deweyToCategoryThousand
 
 
+# from app.models_populate import create_ten_classes, populate_ten_classes, populate_hundred_classes
+
+
+
+
 @main.route('/')
 def index():
     return render_template('index.html')
 
 # @main.route('/<username>/books/')
 # See missing dewey numbers, not to use during production
+@main.route('/circlepacking')
+def circlePacking():
+
+    user = User.query.filter_by(username='john').first()
+    # books = user.books.all()
+
+    ten_cat = Ten_Categories.query.all()
+    ten_cat_list = [ten_category.classification for ten_category in ten_cat]
+
+    hun_cat = Hundred_Categories.query.all()
+    hun_cat_list = [hun_category.classification for hun_category in hun_cat]
+
+    thou_cat = Thousand_Categories.query.all()
+    thou_cat_list = [thou_category.classification for thou_category in thou_cat]
+
+    tens_list = []
+    
+    
+    books_dict = {"name" : "books", "children" : tens_list}
+    for i in ten_cat:
+        ten_placeholder = {} # dict of tens category
+        hun_list = []
+        ten_title = i.call_number + ' | ' + i.classification # string tens list
+        ten_placeholder["name"] = ten_title
+        ten_placeholder["children"] = hun_list
+        for j in i.hundred_values:
+            hun_placeholder = {}
+            tho_list = []
+            hun_title = j.call_number + ' | ' + j.classification
+            hun_placeholder["name"] = hun_title
+            hun_placeholder["children"] = tho_list
+            hun_list.append(hun_placeholder)
+            for k in j.thousand_values:
+                tho_placeholder = {}
+                book_list = []
+                tho_title = k.call_number + ' | ' + k.classification
+                tho_placeholder["name"] = tho_title
+                tho_placeholder["children"] = [i.title for i in k.books]
+                tho_list.append(tho_placeholder)
+
+        tens_list.append(ten_placeholder)
+  
+    return jsonify(books_dict)
+
+
 @main.route('/books_uploaded')
 def viewBooks():
 
@@ -19,9 +69,6 @@ def viewBooks():
 
     books_list = [book.serialize() for book in books]
     return jsonify(books_list)
-
-
-
 
 @main.route('/ten_categories')
 def viewTenCategories():
@@ -51,7 +98,6 @@ def viewThousandCategories():
 
     books_within_categories = [category.to_json() for category in Thousand_Categories.query.all()]
     return jsonify(books_within_categories)
-
 
 
 
@@ -171,4 +217,5 @@ def csv_import_thousand_categories():
     <input type=file name=file><input type=submit value=Upload>
     </form>
     """
+
 
