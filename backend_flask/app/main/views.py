@@ -5,12 +5,90 @@ from app.models import Book, User, Ten_Categories, Hundred_Categories, Thousand_
 from ..api.books import deweyDecimalLink, deweyToCategoryTen, deweyToCategoryHundred, deweyToCategoryThousand
 
 
+# from app.models_populate import create_ten_classes, populate_ten_classes, populate_hundred_classes
+
+
+
+
 @main.route('/')
 def index():
     return render_template('index.html')
 
 # @main.route('/<username>/books/')
 # See missing dewey numbers, not to use during production
+@main.route('/circlepacking')
+def circlePacking():
+
+    user = User.query.filter_by(username='john').first()
+    # books = user.books.all()
+
+    ten_cat = Ten_Categories.query.all()
+    ten_cat_list = [ten_category.classification for ten_category in ten_cat]
+
+    hun_cat = Hundred_Categories.query.all()
+    hun_cat_list = [hun_category.classification for hun_category in hun_cat]
+
+    thou_cat = Thousand_Categories.query.all()
+    thou_cat_list = [thou_category.classification for thou_category in thou_cat]
+
+    tens_list = []
+    hun_list = []
+    books_dict = {"name" : "books", "children" : tens_list}
+    for i in range(len(ten_cat)):
+        ten_placeholder = {}
+        ten_title = ten_cat[i].classification # string tens list
+        ten_placeholder["name"] = ten_title
+        ten_placeholder["children"] = hun_list
+
+        for j in ten_cat[i].hundred_values:
+            hun_placeholder = {}
+            hun_title = j.classification
+            hun_placeholder["name"] = hun_title
+            hun_placeholder["children"] = []
+            hun_list.append(hun_placeholder)
+
+
+        tens_list.append(ten_placeholder)
+
+    return jsonify(books_dict)
+
+
+        # hundreds_list = []
+        # hundreds_dict = {}
+        # for j in ten_cat[i].hundred_values:
+        #     hundreds_list.append(j.classification)
+        #     for 
+        # hundred_title = ten_cat[i].hundred_values # list of 10 hundred val items into ten list
+        # books_dict[ten_title] = hundreds_list 
+        # # for j in range(len(hun_cat)):
+        # #     hun_thous_title = hun_cat[j]
+        # #     thousand_title = hun_cat[j].thousand_values
+
+    bookshelf_circle = [
+        {
+        "name" : "books",
+        "children" : [
+            {
+                "name" : ten_cat[0].classification,
+                # "name" : ten_cat[0].call_number + ' | ' + ten_cat[0].classification,
+                "children" : [
+                    {
+                        "name" : ten_cat[0].hundred_values[0].thousand_values[0].classification,
+                        "children" : [
+                            {
+                                    "books" : [ten_cat[0].hundred_values[0].thousand_values[0].books]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+    ]
+    
+    return jsonify(bookshelf_circle)
+
+
 @main.route('/books_uploaded')
 def viewBooks():
 
@@ -19,9 +97,6 @@ def viewBooks():
 
     books_list = [book.serialize() for book in books]
     return jsonify(books_list)
-
-
-
 
 @main.route('/ten_categories')
 def viewTenCategories():
@@ -51,7 +126,6 @@ def viewThousandCategories():
 
     books_within_categories = [category.to_json() for category in Thousand_Categories.query.all()]
     return jsonify(books_within_categories)
-
 
 
 
@@ -171,4 +245,5 @@ def csv_import_thousand_categories():
     <input type=file name=file><input type=submit value=Upload>
     </form>
     """
+
 

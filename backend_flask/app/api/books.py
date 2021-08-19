@@ -77,6 +77,7 @@ def csv_import():
                 db.session.commit()
 
 
+
             db.session.add(book_instance)
             db.session.commit()
 

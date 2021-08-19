@@ -1,7 +1,6 @@
 .env
 
 # Packages
-/__pycache__/
 __pycache__
 
 # SQLite databases
