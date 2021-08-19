@@ -32,61 +32,33 @@ def circlePacking():
     thou_cat_list = [thou_category.classification for thou_category in thou_cat]
 
     tens_list = []
-    hun_list = []
+    
+    
     books_dict = {"name" : "books", "children" : tens_list}
-    for i in range(len(ten_cat)):
-        ten_placeholder = {}
-        ten_title = ten_cat[i].classification # string tens list
+    for i in ten_cat:
+        ten_placeholder = {} # dict of tens category
+        hun_list = []
+        ten_title = i.call_number + ' | ' + i.classification # string tens list
         ten_placeholder["name"] = ten_title
         ten_placeholder["children"] = hun_list
-
-        for j in ten_cat[i].hundred_values:
+        for j in i.hundred_values:
             hun_placeholder = {}
-            hun_title = j.classification
+            tho_list = []
+            hun_title = j.call_number + ' | ' + j.classification
             hun_placeholder["name"] = hun_title
-            hun_placeholder["children"] = []
+            hun_placeholder["children"] = tho_list
             hun_list.append(hun_placeholder)
-
+            for k in j.thousand_values:
+                tho_placeholder = {}
+                book_list = []
+                tho_title = k.call_number + ' | ' + k.classification
+                tho_placeholder["name"] = tho_title
+                tho_placeholder["children"] = [i.title for i in k.books]
+                tho_list.append(tho_placeholder)
 
         tens_list.append(ten_placeholder)
-
+  
     return jsonify(books_dict)
-
-
-        # hundreds_list = []
-        # hundreds_dict = {}
-        # for j in ten_cat[i].hundred_values:
-        #     hundreds_list.append(j.classification)
-        #     for 
-        # hundred_title = ten_cat[i].hundred_values # list of 10 hundred val items into ten list
-        # books_dict[ten_title] = hundreds_list 
-        # # for j in range(len(hun_cat)):
-        # #     hun_thous_title = hun_cat[j]
-        # #     thousand_title = hun_cat[j].thousand_values
-
-    bookshelf_circle = [
-        {
-        "name" : "books",
-        "children" : [
-            {
-                "name" : ten_cat[0].classification,
-                # "name" : ten_cat[0].call_number + ' | ' + ten_cat[0].classification,
-                "children" : [
-                    {
-                        "name" : ten_cat[0].hundred_values[0].thousand_values[0].classification,
-                        "children" : [
-                            {
-                                    "books" : [ten_cat[0].hundred_values[0].thousand_values[0].books]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-    ]
-    
-    return jsonify(bookshelf_circle)
 
 
 @main.route('/books_uploaded')
