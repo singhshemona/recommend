@@ -6,17 +6,22 @@
 
 import os
 from app import create_app, db
-from app.models import User, Book
-from flask_migrate import Migrate
+from app.models import User, Book, Ten_Categories, Hundred_Categories, Thousand_Categories
+from flask_migrate import Migrate, upgrade
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
 
 
-'''To avoid imporint database instances and models into a shell session'''
+'''To avoid importing database instances and models into a shell session'''
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, User=User, Book=Book)
+    return dict(db=db, 
+                User=User, 
+                Book=Book, 
+                Ten_Categories=Ten_Categories, 
+                Hundred_Categories=Hundred_Categories,
+                Thousand_Categories=Thousand_Categories)
 
 
 @app.cli.command()
@@ -26,3 +31,8 @@ def test():
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
 
+@app.cli.command()
+def deploy():
+    '''Run deployment tasks'''
+    # migrate database to latest revision
+    upgrade()

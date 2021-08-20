@@ -40,18 +40,42 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+    def circle_packing(self):
+        ten_cat = Ten_Categories.query.all()
+        ten_cat_list = [ten_category.classification for ten_category in ten_cat]
+
+        hun_cat = Hundred_Categories.query.all()
+        hun_cat_list = [hun_category.classification for hun_category in hun_cat]
+
+        thou_cat = Thousand_Categories.query.all()
+        thou_cat_list = [thou_category.classification for thou_category in thou_cat]
+
+
+        bookshelf_circle = [
+            {
+                "name" : "books",
+                "children" : [
+                ],
+            }
+        ]
+        return bookshelf_circle
+
+
+
 
 class Book(db.Model):
     __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)
 
     ''' Classify API + DDC Table '''
-    classify_DDC = db.Column(db.Float)
+    classify_ddc = db.Column(db.String)
     classify_category = db.Column(db.String) # replace later with 3 other tables
-    # ten_category_DDC = db.Column(db.Integer, db.ForeignKey('ten_category_ddcs.id'))
+    classify_ten_id = db.Column(db.Integer, db.ForeignKey('ten_categories_ddc.id')) # All 3 below were strings, forced to convert
+    classify_hundred_id = db.Column(db.Integer, db.ForeignKey('hundred_categories_ddc.id'))
+    classify_thousand_id = db.Column(db.Integer, db.ForeignKey('thousand_categories_ddc.id'))
 
     ''' Goodreads info from csv import '''
-    book_id = db.Column(db.Integer)
+    book_id = db.Column(db.String)
     title = db.Column(db.String)
     author = db.Column(db.String)
     additional_authors = db.Column(db.String)
@@ -79,15 +103,77 @@ class Book(db.Model):
         book_user = {
             'title' : self.title,
             'author' : self.author,
-            'classify_DDC' : self.classify_DDC,
-            'classify_category' : self.classify_category,
+            'classify_DDC' : self.classify_ddc,
+            'classify_ten_id' : self.classify_ten_id,
+            'classify_hundred_id' : self.classify_hundred_id,
+            'classify_thousand_id' : self.classify_thousand_id,
+            'isbn' : self.isbn,
+            'isbn13' : self.isbn13
         }
         return book_user
 
 
-# class Ten_Category_DDC(db.Model):
-#     __tablename__ = 'ten_categories_DDC'
-#     id = db.Column(db.Integer, primary_key=True)
-#     call_number = db.Column(db.String)
-#     classification = db.Column(db.String)
-#     books = db.relationship('Book', backref='ten_category_ddc')
+
+
+class Ten_Categories(db.Model):
+    __tablename__ = 'ten_categories_ddc'
+    id = db.Column(db.Integer, primary_key=True)
+    call_number = db.Column(db.String) # Should be a different data type
+    classification = db.Column(db.String)
+    hundred_values = db.relationship('Hundred_Categories', backref='hundred_ten_categories')
+    books = db.relationship('Book', backref='classify_ten')
+
+
+
+
+    def to_json(self):
+        books = {
+            'call_number' : self.call_number,
+            'classification' : self.classification,
+            'books' : [book.title for book in self.books]
+        }
+        return books
+
+
+
+
+class Hundred_Categories(db.Model):
+    __tablename__ = 'hundred_categories_ddc'
+    id = db.Column(db.Integer, primary_key=True)
+    call_number = db.Column(db.String)
+    classification = db.Column(db.String)
+    tens_id = db.Column(db.Integer, db.ForeignKey('ten_categories_ddc.id'))
+    thousand_values = db.relationship('Thousand_Categories', backref='thousand_ten_categories')
+    books = db.relationship('Book', backref='classify_hundred')
+
+    
+
+    
+    
+    def to_json(self):
+        books = {
+            'call_number' : self.call_number,
+            'classification' : self.classification,
+            'books' : [book.title for book in self.books]
+        }
+        return books
+
+class Thousand_Categories(db.Model):
+    __tablename__ = 'thousand_categories_ddc'
+    id = db.Column(db.Integer, primary_key=True)
+    call_number = db.Column(db.String)
+    classification = db.Column(db.String)
+    hundreds_id = db.Column(db.Integer, db.ForeignKey('hundred_categories_ddc.id'))
+    books = db.relationship('Book', backref='classify_thousand')
+
+
+    def to_json(self):
+        books = {
+            'call_number' : self.call_number,
+            'classification' : self.classification,
+            'books' : [book.title for book in self.books]
+        }
+        return books
+
+
+

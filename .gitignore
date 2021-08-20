@@ -23,3 +23,5 @@ media
 # Front end #
 /node_modules
 /build
+.eslintcache
+package-lock.json

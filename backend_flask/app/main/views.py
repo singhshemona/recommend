@@ -1,95 +1,137 @@
 from flask import render_template, jsonify, request, url_for, redirect
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import login_required, current_user
 from . import main
 from .. import db
-from app.models import Book, User
-import flask_excel as excel
+from app.models import Book, User, Ten_Categories, Hundred_Categories, Thousand_Categories
+from ..api.books import deweyDecimalLink, deweyToCategoryTen, deweyToCategoryHundred, deweyToCategoryThousand
+
+
+# from app.models_populate import create_ten_classes, populate_ten_classes, populate_hundred_classes
 
 
 
 
 @main.route('/')
 def index():
-    # return '<h1>Home Page</h1>'
     return render_template('index.html')
 
-@main.route('/<username>/books/')
-def bookshelf(username):
+# @main.route('/<username>/books/')
+# See missing dewey numbers, not to use during production
+@main.route('/circlepacking')
+def circlePacking():
+
+    user = User.query.filter_by(username='john').first()
+    # books = user.books.all()
+
+    ten_cat = Ten_Categories.query.all()
+    ten_cat_list = [ten_category.classification for ten_category in ten_cat]
+
+    hun_cat = Hundred_Categories.query.all()
+    hun_cat_list = [hun_category.classification for hun_category in hun_cat]
+
+    thou_cat = Thousand_Categories.query.all()
+    thou_cat_list = [thou_category.classification for thou_category in thou_cat]
+
+    tens_list = []
+    
+    
+    books_dict = {"name" : "books", "children" : tens_list}
+    for i in ten_cat:
+        ten_placeholder = {} # dict of tens category
+        hun_list = []
+        ten_title = i.call_number + ' | ' + i.classification # string tens list
+        ten_placeholder["name"] = ten_title
+        ten_placeholder["children"] = hun_list
+        for j in i.hundred_values:
+            hun_placeholder = {}
+            tho_list = []
+            hun_title = j.call_number + ' | ' + j.classification
+            hun_placeholder["name"] = hun_title
+            hun_placeholder["children"] = tho_list
+            hun_list.append(hun_placeholder)
+            for k in j.thousand_values:
+                tho_placeholder = {}
+                book_list = []
+                tho_title = k.call_number + ' | ' + k.classification
+                tho_placeholder["name"] = tho_title
+                tho_placeholder["children"] = [i.title for i in k.books]
+                tho_list.append(tho_placeholder)
+
+        tens_list.append(ten_placeholder)
+  
+    return jsonify(books_dict)
 
 
-    user = User.query.filter_by(username=username).first()
+@main.route('/books_uploaded')
+def viewBooks():
+
+    user = User.query.filter_by(username='john').first()
     books = user.books.all()
 
     books_list = [book.serialize() for book in books]
     return jsonify(books_list)
 
-    # return render_template('bookshelf.html', books=books) #returns a list
+@main.route('/ten_categories')
+def viewTenCategories():
+
+    user = User.query.filter_by(username='john').first()
+    books = user.books.all()
+
+    books_within_categories = [category.to_json() for category in Ten_Categories.query.all()]
+    return jsonify(books_within_categories)
 
 
-@main.route('/books/upload', methods=['GET', 'POST'])
-def csv_import():
+@main.route('/hundred_categories')
+def viewHundredCategories():
+
+    user = User.query.filter_by(username='john').first()
+    books = user.books.all()
+
+    books_within_categories = [category.to_json() for category in Hundred_Categories.query.all()]
+    return jsonify(books_within_categories)
+
+
+@main.route('/thousand_categories')
+def viewThousandCategories():
+
+    user = User.query.filter_by(username='john').first()
+    books = user.books.all()
+
+    books_within_categories = [category.to_json() for category in Thousand_Categories.query.all()]
+    return jsonify(books_within_categories)
+
+
+
+
+# -----------------------------------------------------------------------------------------------
+# One time upload of categories, Admin only
+
+@main.route('/category/ten/upload', methods=['GET', 'POST'])
+def csv_import_ten_categories():
     if request.method == 'POST':
 
-        def book_init_func(row):
-            book_instance = Book(row['title'])
-            book_instance.book_id = row['book_id']
-            book_instance.author = row['author']
-            book_instance.additional_authors = row['additional_authors']
-            book_instance.isbn = row['isbn']
-            book_instance.isbn13 = row['isbn13']
-            book_instance.my_rating = row['my_rating']
-            book_instance.avg_rating = row['avg_rating']
-            book_instance.publisher = row['publisher']
-            book_instance.binding = row['binding']
-            book_instance.pages = row['pages']
-            book_instance.year_publish = row['year_published']
-            book_instance.year_publish_original = row['year_publish_original']
-            book_instance.date_read = row['date_read']
-            book_instance.date_added = row['date_added']
-            book_instance.bookshelves = row['bookshelves']
+        def category_init_func(row):
+            category_instance = Ten_Categories()
+            category_instance.call_number = row['call_number']
+            category_instance.classification = row['classification']
 
-            '''Add rows to User.books'''
-            user = User.query.filter_by(username='john').first()
-            user.books.append(book_instance)
+            # category_instance = Ten_Categories_DDC(row['call_number'], row['classification'])
+            return category_instance
 
-            '''populate Dewey Decimal number'''
-            
-            return book_instance
-            
-
+                     
         mapdict = {
-            'Book Id' : 'book_id',
-            'Title' : 'title',
-            'Author' : 'author',
-            'Additional Authors' : 'additional_authors',
-            'ISBN' : 'isbn',
-            'ISBN13' : 'isbn13',
-            'My Rating' : 'my_rating',
-            'Average Rating' : 'avg_rating',
-            'Publisher' : 'publisher',
-            'Binding' : 'binding',
-            'Number of Pages' : 'pages',
-            'Year Published' : 'year_published',
-            'Original Publication Year' : 'year_publish_original',
-            'Date Read' : 'date_read',
-            'Date Added' : 'date_added',
-            'Bookshelves' : 'bookshelves'        
+            'Call Number' : 'call_number',
+            'Classification' : 'classification',
             }
 
-        # excel_request = excel.ExcelRequest('environ')
         request.isave_to_database(
             field_name="file",
             session=db.session,
-            table=Book,
-            initializer=book_init_func,
+            table=Ten_Categories,
+            initializer=category_init_func,
             mapdict=mapdict
-        )
-
-        
-
-
-        return redirect(url_for(".bookshelf", username='john'), code=302) #redirect elsewhere
+        )      
+          
+        return redirect(url_for(".viewTenCategories", username='john'), code=302)
 
     return """
     <!doctype html>
@@ -100,16 +142,80 @@ def csv_import():
     </form>
     """
 
-    # return render_template('bookshelf.html')
+
+@main.route('/category/hundred/upload', methods=['GET', 'POST'])
+def csv_import_hundred_categories():
+    if request.method == 'POST':
+
+        def category_init_func(row):
+            category_instance = Hundred_Categories()
+            category_instance.call_number = row['call_number']
+            category_instance.classification = row['classification']
+
+            # category_instance = Hundred_Categories_DDC(row['call_number'], row['classification'])
+            return category_instance
+
+                     
+        mapdict = {
+            'Call Number' : 'call_number',
+            'Classification' : 'classification',
+            }
+
+        request.isave_to_database(
+            field_name="file",
+            session=db.session,
+            table=Hundred_Categories,
+            initializer=category_init_func,
+            mapdict=mapdict
+        )      
+          
+        return redirect(url_for(".viewHundredCategories", username='john'), code=302)
+
+    return """
+    <!doctype html>
+    <title>Upload an excel file</title>
+    <h1>Excel file upload (xls, xlsx, ods please)</h1>
+    <form action="" method=post enctype=multipart/form-data><p>
+    <input type=file name=file><input type=submit value=Upload>
+    </form>
+    """
 
 
-@main.route("/handson_view", methods=["GET"])
-def handson_table():
-    return excel.make_response_from_a_table(
-        session=db.session,
-        table=Book, 
-        file_type="handsontable.html"
-    )
+@main.route('/category/thousand/upload', methods=['GET', 'POST'])
+def csv_import_thousand_categories():
+    if request.method == 'POST':
 
+        def category_init_func(row):
+            category_instance = Thousand_Categories()
+            category_instance.call_number = row['call_number']
+            category_instance.classification = row['classification']
+
+            # category_instance = Thousand_Categories_DDC(row['call_number'], row['classification'])
+            return category_instance
+
+                     
+        mapdict = {
+            'Call Number' : 'call_number',
+            'Classification' : 'classification',
+            }
+
+        request.isave_to_database(
+            field_name="file",
+            session=db.session,
+            table=Thousand_Categories,
+            initializer=category_init_func,
+            mapdict=mapdict
+        )      
+          
+        return redirect(url_for(".viewThousandCategories", username='john'), code=302)
+
+    return """
+    <!doctype html>
+    <title>Upload an excel file</title>
+    <h1>Excel file upload (xls, xlsx, ods please)</h1>
+    <form action="" method=post enctype=multipart/form-data><p>
+    <input type=file name=file><input type=submit value=Upload>
+    </form>
+    """
 
 
