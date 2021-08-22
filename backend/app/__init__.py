@@ -5,12 +5,14 @@ from flask_migrate import Migrate
 from config import config
 from flask_login import LoginManager
 import flask_excel as excel
+from flask_mail import Mail
 
 '''
 Flask Configuration Object - Application Factory / Factory Function
 '''
 
 bootstrap = Bootstrap()
+mail = Mail()
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
@@ -23,6 +25,7 @@ def create_app(config_name):
     config[config_name].init_app(app)
     
     bootstrap.init_app(app)
+    mail.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
     excel.init_excel(app) # should this be excel.init_excel.init_app(app)?

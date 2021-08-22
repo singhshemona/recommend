@@ -2,6 +2,7 @@ from flask import request, redirect, url_for
 from app.models import Book, User, Ten_Categories, Hundred_Categories, Thousand_Categories
 from . import api
 from .. import db
+from .decorators import permission_required
 import flask_excel as excel
 
 import xmltodict, json
@@ -11,11 +12,12 @@ import re
 
 
 
-
+# Add ['DELETE'] method. Doesn't remove book info, only user association
 
 
 # http://127.0.0.1:5000/api/v1/books/upload
 @api.route('/books/upload', methods=['GET', 'POST'])
+@permission_required(permission.WRITE)
 def csv_import():
     if request.method == 'POST':
 

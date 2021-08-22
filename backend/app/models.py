@@ -3,6 +3,8 @@ from . import db
 from . import login_manager
 from flask_login import UserMixin
 from flask_serialize import FlaskSerializeMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
 
 
 bookshelf = db.Table('bookshelf', 
@@ -36,6 +38,20 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def generate_auth_token(self, expiration):
+        s = Serializer(current_app.config['SECRET_KEY'],
+                        expires_in=expiration)
+        return s.dumps({'id' : self.id}).decode('utf-8')
+    
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        return User.query.get(data['id'])
 
     def __repr__(self):
         return '<User %r>' % self.username
