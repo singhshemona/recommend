@@ -40,7 +40,7 @@ Here are some files which you may find helpful when diving into the project:
 
 1. Set up your Python virtual environment by running `pyvenv venv` in that directory and running `source venv/bin/activate` to active it. Or create a conda environment.
 2. make sure `pip` is installed
-3. Install Python requirements with `pip install -r requirements.txt`. You may need to install some [build prerequisites](https://www.psycopg.org/docs/install.html#build-prerequisites); on Debian-like systems, they include the packages `python3-dev` and `libpq-dev`. 
+3. Install Python requirements with `pip install -r requirements.txt`. You may need to install some [build prerequisites](https://www.psycopg.org/docs/install.html#build-prerequisites); on Debian-like systems, they include the packages `python3-dev` and `libpq-dev`. You can try running `pip install psycopg2-binary` first to see if that solves the issue.
 4. Install PostgreSQL and create an empty database, e.g. `createdb wrec`
 5. Add environment variables (see next section)
 6. At your terminal, run `flask db upgrade` to create the database tables
