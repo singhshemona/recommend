@@ -17,7 +17,7 @@ import re
 
 # http://127.0.0.1:5000/api/v1/books/upload
 @api.route('/books/upload', methods=['GET', 'POST'])
-@permission_required(permission.WRITE)
+# @permission_required(permission.WRITE)
 def csv_import():
     if request.method == 'POST':
 
@@ -129,7 +129,7 @@ def deweyDecimalLink(isbn):
             xmlContent = urlopen(searchURL)
             xmlFile = xmlContent.read()
             xmlDict = xmltodict.parse(xmlFile)         
-            jsonDumps = json.dumps(xmlDict)
+            jsonDumps = json.dumps(xmlDict) # redundant
             # with open (f'app/externalFiles/isbn-user-john.json', 'w') as f:
                 # f.write(jsonDumps)
             jsonContentISBN = json.loads(jsonDumps)
