@@ -3,9 +3,16 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or '2344388cb0269cbe1d2a7c23dae8c64a9762f0838f63eed7f48'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or '2344388cb0269cbe1d2a7c23dae8c64a9762f0838f63eed7f48' 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.gmail.com') 
+    MAIL_PORT = 587
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() in \
+        ['true', 'on', '1']
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
+    
     ''' calling init_app on the extensions completes their initialization '''
     @staticmethod
     def init_app(app):
