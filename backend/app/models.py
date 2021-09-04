@@ -1,10 +1,10 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from . import db
-from . import login_manager
 from flask_login import UserMixin
 from flask_serialize import FlaskSerializeMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
+from . import db
+from . import login_manager
 
 
 bookshelf = db.Table('bookshelf', 
@@ -55,28 +55,6 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
-
-    def circle_packing(self):
-        ten_cat = Ten_Categories.query.all()
-        ten_cat_list = [ten_category.classification for ten_category in ten_cat]
-
-        hun_cat = Hundred_Categories.query.all()
-        hun_cat_list = [hun_category.classification for hun_category in hun_cat]
-
-        thou_cat = Thousand_Categories.query.all()
-        thou_cat_list = [thou_category.classification for thou_category in thou_cat]
-
-
-        bookshelf_circle = [
-            {
-                "name" : "books",
-                "children" : [
-                ],
-            }
-        ]
-        return bookshelf_circle
-
-
 
 
 class Book(db.Model):
@@ -131,12 +109,12 @@ class Book(db.Model):
 
 
 
-class Ten_Categories(db.Model):
+class TenCategories(db.Model):
     __tablename__ = 'ten_categories_ddc'
     id = db.Column(db.Integer, primary_key=True)
     call_number = db.Column(db.String) # Should be a different data type
     classification = db.Column(db.String)
-    hundred_values = db.relationship('Hundred_Categories', backref='hundred_ten_categories')
+    hundred_values = db.relationship('HundredCategories', backref='hundred_ten_categories')
     books = db.relationship('Book', backref='classify_ten')
 
 
@@ -153,13 +131,13 @@ class Ten_Categories(db.Model):
 
 
 
-class Hundred_Categories(db.Model):
+class HundredCategories(db.Model):
     __tablename__ = 'hundred_categories_ddc'
     id = db.Column(db.Integer, primary_key=True)
     call_number = db.Column(db.String)
     classification = db.Column(db.String)
     tens_id = db.Column(db.Integer, db.ForeignKey('ten_categories_ddc.id'))
-    thousand_values = db.relationship('Thousand_Categories', backref='thousand_ten_categories')
+    thousand_values = db.relationship('ThousandCategories', backref='thousand_ten_categories')
     books = db.relationship('Book', backref='classify_hundred')
 
     
@@ -174,7 +152,7 @@ class Hundred_Categories(db.Model):
         }
         return books
 
-class Thousand_Categories(db.Model):
+class ThousandCategories(db.Model):
     __tablename__ = 'thousand_categories_ddc'
     id = db.Column(db.Integer, primary_key=True)
     call_number = db.Column(db.String)

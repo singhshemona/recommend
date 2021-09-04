@@ -1,14 +1,16 @@
-from flask import request, redirect, url_for
-from app.models import Book, User, Ten_Categories, Hundred_Categories, Thousand_Categories
-from . import api
-from .. import db
-from .decorators import permission_required
-import flask_excel as excel
-
-import xmltodict, json
 from urllib.request import urlopen
 from urllib.parse import urlencode
 import re
+
+from flask import request, redirect, url_for
+import flask_excel as excel
+import xmltodict, json
+
+from app.models import Book, User, TenCategories, HundredCategories, ThousandCategories
+from . import api
+from .. import db
+from .decorators import permission_required
+
 
 
 
@@ -24,15 +26,15 @@ def csv_import():
         def book_init_func(row):
             book_instance = Book(row['title'])
             book_instance.author = row['author']
+
+
+
             book_instance.isbn = row['isbn']
             book_instance.isbn13 = row['isbn13']
-        
-            
-            
+               
             '''Cleanup ISBN numbers'''        
             # book_instance.isbn = cleanISBN(book_instance.isbn)
             # book_instance.isbn13 = cleanISBN(book_instance.isbn13)
-
             '''Add rows to User.books'''        
             user = User.query.filter_by(username='john').first()
             user.books.append(book_instance)
@@ -53,35 +55,15 @@ def csv_import():
             initializer=book_init_func,
             mapdict=mapdict
         )      
-          
-        '''Dewey Number + Category'''  
-        user = User.query.filter_by(username='john').first()
-        books = user.books.all()
-        for book_instance in books:      
-            book_instance.classify_DDC = deweyDecimalLink(book_instance.isbn) # 800
-            book_instance.classify_ten_id = deweyToCategoryTen(book_instance.classify_DDC) # Literature          
-            book_instance.classify_hundred_id = deweyToCategoryHundred(book_instance.classify_DDC) # Literature          
-            book_instance.classify_thousand_id = deweyToCategoryThousand(book_instance.classify_DDC) # Literature          
-            if book_instance.classify_ten_id is not None:
-                category_obj = Ten_Categories.query.filter_by(id=book_instance.classify_ten_id).first()
-                category_obj.books.append(book_instance)
-                db.session.add(category_obj)
-                db.session.commit()
-            if book_instance.classify_hundred_id is not None:
-                category_obj = Hundred_Categories.query.filter_by(id=book_instance.classify_hundred_id).first()
-                category_obj.books.append(book_instance)
-                db.session.add(category_obj)
-                db.session.commit()
-            if book_instance.classify_thousand_id is not None:
-                category_obj = Thousand_Categories.query.filter_by(id=book_instance.classify_thousand_id).first()
-                category_obj.books.append(book_instance)
-                db.session.add(category_obj)
-                db.session.commit()
 
 
+        '''Create Ten and Hundred nested relationship'''
+        ten_and_hundred()
 
-            db.session.add(book_instance)
-            db.session.commit()
+
+        '''Dewey Number + Category'''
+        dewey_and_thousand()  
+
 
         return redirect(url_for("main.viewBooks", username='john'), code=302) #redirect elsewhere
 
@@ -94,19 +76,77 @@ def csv_import():
     </form>
     """
 
-    # return render_template('bookshelf.html')
 
 
-# # Most likely not use
-# @api.route("/handson_view", methods=["GET"])
-# def handson_table():
-#     return excel.make_response_from_a_table(
-#         session=db.session,
-#         table=Book, 
-#         file_type="handsontable.html"
-#     )
+def dewey_and_thousand():
+    user = User.query.filter_by(username='john').first()
+    books = user.books.all()
+    for book_instance in books:      
+        book_instance.classify_ddc = deweyDecimalLink(book_instance.isbn) # 800
+
+        db.session.add(book_instance)
+        db.session.commit()
+
+        book_instance.classify_ten_id = deweyToCategoryTen(book_instance.classify_ddc) # Literature
+        book_instance.classify_hundred_id = deweyToCategoryHundred(book_instance.classify_ddc) # Literature
+        book_instance.classify_thousand_id = deweyToCategoryThousand(book_instance.classify_ddc) # Literature          
+        
+        if book_instance.classify_ten_id is not None:
+            category_obj = TenCategories.query.filter_by(id=book_instance.classify_ten_id).first()
+            category_obj.books.append(book_instance)
+            db.session.add(category_obj)
+            db.session.commit()
+        if book_instance.classify_hundred_id is not None:
+            category_obj = HundredCategories.query.filter_by(id=book_instance.classify_hundred_id).first()
+            category_obj.books.append(book_instance)
+            db.session.add(category_obj)
+            db.session.commit()
+        if book_instance.classify_thousand_id is not None:
+            category_obj = ThousandCategories.query.filter_by(id=book_instance.classify_thousand_id).first()
+            category_obj.books.append(book_instance)
+            db.session.add(category_obj)
+            db.session.commit()
+
+        db.session.add(book_instance) # ?? Redundant with add + commit above?
+        db.session.commit()
+    return
 
 
+def ten_and_hundred():
+    ten_cat = TenCategories.query.all()
+    hun_cat = HundredCategories.query.all()
+    thou_cat = ThousandCategories.query.all()
+
+
+    def populate_ten_classes():
+        start = 0
+        stop = 10
+        for i in ten_cat:
+            i.hundred_values = hun_cat[start:stop]
+            db.session.add(i)
+
+            start += 10
+            stop += 10
+        db.session.commit()
+        return
+
+
+
+    def populate_hundred_classes():
+        start = 0
+        stop = 10
+        for i in hun_cat:
+            i.thousand_values = thou_cat[start:stop]
+            db.session.add(i)
+
+            start += 10
+            stop += 10
+        db.session.commit()
+        return
+
+        
+    populate_ten_classes()
+    populate_hundred_classes()
 
 # isbn to Dewey decimal
 @api.route('/dewey/', methods=["GET"])
@@ -130,18 +170,13 @@ def deweyDecimalLink(isbn):
             xmlFile = xmlContent.read()
             xmlDict = xmltodict.parse(xmlFile)         
             jsonDumps = json.dumps(xmlDict) # redundant
-            # with open (f'app/externalFiles/isbn-user-john.json', 'w') as f:
-                # f.write(jsonDumps)
             jsonContentISBN = json.loads(jsonDumps)
 
-            # return jsonContentISBN
 
         except AttributeError:
             jsonContentOWI = owiDewey(jsonContentISBN)
             isbnOWI = isbnDewey(jsonContentOWI)
             return isbnOWI
-        # except UnboundLocalError:
-        #     return "No jsonContentOWI"
         
         try:
             isbnDirect = isbnDewey(jsonContentISBN)
@@ -157,12 +192,10 @@ def deweyDecimalLink(isbn):
 def isbnDewey(jsonContentISBN):
 
     if type(jsonContentISBN.get("classify").get('editions').get('edition')) == list:
-        # return 'isbn to dewey in list form'
     
 
         try:
             base = jsonContentISBN.get("classify").get('editions').get('edition')[0]
-            # try:
             deweyNumber0 = base.get('classifications').get('class')[0].get('@sfa')
             deweyNumber1 = base.get('classifications').get('class')[1].get('@sfa')
 
@@ -227,19 +260,19 @@ def deweyToCategoryTen(deweyNumber):
     '''Find the corresponding Category title'''
     # deweyFloat = float(deweyNumber)
     firstNum_ten = deweyNumber[0]
-    for category in Ten_Categories.query.all():
+    for category in TenCategories.query.all():
         if firstNum_ten == category.call_number[0]:
             return category.id
 
 def deweyToCategoryHundred(deweyNumber):
     firstNum_hundred = deweyNumber[0:2]
-    for category in Hundred_Categories.query.all():
+    for category in HundredCategories.query.all():
         if firstNum_hundred == category.call_number[0:2]:
             return category.id
 
 def deweyToCategoryThousand(deweyNumber):
     firstNum_thousand = deweyNumber[0:3]
-    for category in Thousand_Categories.query.all():
+    for category in ThousandCategories.query.all():
         if firstNum_thousand == category.call_number[0:3]:
             return category.id
         # return "no dewey number provided"
@@ -247,23 +280,17 @@ def deweyToCategoryThousand(deweyNumber):
 
 
 
+
 def cleanISBN(isbn):
-    print(isbn)
+    # print(isbn)
     filterISBN = re.findall("[a-zA-Z0-9]", isbn)
     joinISBN = ('').join(filterISBN)
 
     return joinISBN
 
 
+
+
 def addingFakeDewey(isbn):
 
     return 'testing fake dewey'
-
-
-
-
-
-
-errorValues = {
-
-}

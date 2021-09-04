@@ -43,8 +43,16 @@ Here are some files which you may find helpful when diving into the project:
 3. Install Python requirements with `pip install -r requirements.txt`. You may need to install some [build prerequisites](https://www.psycopg.org/docs/install.html#build-prerequisites); on Debian-like systems, they include the packages `python3-dev` and `libpq-dev`. You can try running `pip install psycopg2-binary` first to see if that solves the issue.
 4. Install PostgreSQL and create an empty database, e.g. `createdb wrec`
 5. Add environment variables (see next section)
-6. At your terminal, run `flask db upgrade` to create the database tables
-6. At your terminal run `flask run`. Click on development server shown in your terminal [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
+6. At your terminal, you will need to initialize, migrate and upgrade your database:
+	- `flask db migrate -m "initial migration`
+	- `flask db migrate`
+	- `flask db upgrade`
+7. Then go to each of the following endpoints to upload the tens, hundreds and thousands csv files. The csv files are located in the `/app/externalFiles/DDS_directory_structure`. The corresponding file needs to be uploaded at it's respective endpoint:
+	- DDSGORun0.csv > `/category/ten/upload`
+	- DDSGORun1.csv > `/category/hundred/upload`
+	- DDSGORun2.csv > `/category/thousand/upload`
+
+8. At your terminal run `flask run`. Click on development server shown in your terminal [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
 
 ## Environment variables
 Create a `.env` file at the project level and add the following:

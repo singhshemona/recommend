@@ -1,8 +1,8 @@
 from flask import render_template, jsonify, request, url_for, redirect
 from . import main
 from .. import db
-from app.models import Book, User, Ten_Categories, Hundred_Categories, Thousand_Categories
-from ..api.books import deweyDecimalLink, deweyToCategoryTen, deweyToCategoryHundred, deweyToCategoryThousand
+from app.models import Book, User, TenCategories, HundredCategories, ThousandCategories
+from ..api.books import deweyDecimalLink, deweyToCategoryTen, deweyToCategoryHundred, deweyToCategoryThousand, ten_and_hundred
 
 
 # from app.models_populate import create_ten_classes, populate_ten_classes, populate_hundred_classes
@@ -18,17 +18,18 @@ def index():
 # See missing dewey numbers, not to use during production
 @main.route('/circlepacking')
 def circlePacking():
+    # ten_and_hundred()
 
     user = User.query.filter_by(username='john').first()
     # books = user.books.all()
 
-    ten_cat = Ten_Categories.query.all()
+    ten_cat = TenCategories.query.all()
     ten_cat_list = [ten_category.classification for ten_category in ten_cat]
 
-    hun_cat = Hundred_Categories.query.all()
+    hun_cat = HundredCategories.query.all()
     hun_cat_list = [hun_category.classification for hun_category in hun_cat]
 
-    thou_cat = Thousand_Categories.query.all()
+    thou_cat = ThousandCategories.query.all()
     thou_cat_list = [thou_category.classification for thou_category in thou_cat]
 
     tens_list = []
@@ -76,7 +77,7 @@ def viewTenCategories():
     user = User.query.filter_by(username='john').first()
     books = user.books.all()
 
-    books_within_categories = [category.to_json() for category in Ten_Categories.query.all()]
+    books_within_categories = [category.to_json() for category in TenCategories.query.all()]
     return jsonify(books_within_categories)
 
 
@@ -86,7 +87,7 @@ def viewHundredCategories():
     user = User.query.filter_by(username='john').first()
     books = user.books.all()
 
-    books_within_categories = [category.to_json() for category in Hundred_Categories.query.all()]
+    books_within_categories = [category.to_json() for category in HundredCategories.query.all()]
     return jsonify(books_within_categories)
 
 
@@ -96,7 +97,7 @@ def viewThousandCategories():
     user = User.query.filter_by(username='john').first()
     books = user.books.all()
 
-    books_within_categories = [category.to_json() for category in Thousand_Categories.query.all()]
+    books_within_categories = [category.to_json() for category in ThousandCategories.query.all()]
     return jsonify(books_within_categories)
 
 
@@ -110,11 +111,11 @@ def csv_import_ten_categories():
     if request.method == 'POST':
 
         def category_init_func(row):
-            category_instance = Ten_Categories()
+            category_instance = TenCategories()
             category_instance.call_number = row['call_number']
             category_instance.classification = row['classification']
 
-            # category_instance = Ten_Categories_DDC(row['call_number'], row['classification'])
+            # category_instance = TenCategories_DDC(row['call_number'], row['classification'])
             return category_instance
 
                      
@@ -126,7 +127,7 @@ def csv_import_ten_categories():
         request.isave_to_database(
             field_name="file",
             session=db.session,
-            table=Ten_Categories,
+            table=TenCategories,
             initializer=category_init_func,
             mapdict=mapdict
         )      
@@ -148,11 +149,11 @@ def csv_import_hundred_categories():
     if request.method == 'POST':
 
         def category_init_func(row):
-            category_instance = Hundred_Categories()
+            category_instance = HundredCategories()
             category_instance.call_number = row['call_number']
             category_instance.classification = row['classification']
 
-            # category_instance = Hundred_Categories_DDC(row['call_number'], row['classification'])
+            # category_instance = HundredCategories_DDC(row['call_number'], row['classification'])
             return category_instance
 
                      
@@ -164,7 +165,7 @@ def csv_import_hundred_categories():
         request.isave_to_database(
             field_name="file",
             session=db.session,
-            table=Hundred_Categories,
+            table=HundredCategories,
             initializer=category_init_func,
             mapdict=mapdict
         )      
@@ -186,11 +187,11 @@ def csv_import_thousand_categories():
     if request.method == 'POST':
 
         def category_init_func(row):
-            category_instance = Thousand_Categories()
+            category_instance = ThousandCategories()
             category_instance.call_number = row['call_number']
             category_instance.classification = row['classification']
 
-            # category_instance = Thousand_Categories_DDC(row['call_number'], row['classification'])
+            # category_instance = ThousandCategories_DDC(row['call_number'], row['classification'])
             return category_instance
 
                      
@@ -202,7 +203,7 @@ def csv_import_thousand_categories():
         request.isave_to_database(
             field_name="file",
             session=db.session,
-            table=Thousand_Categories,
+            table=ThousandCategories,
             initializer=category_init_func,
             mapdict=mapdict
         )      
