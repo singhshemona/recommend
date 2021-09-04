@@ -11,6 +11,7 @@ class Config:
         ['true', 'on', '1']
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    SSL_REDIRECT = False
 
     
     ''' calling init_app on the extensions completes their initialization '''
@@ -38,6 +39,8 @@ class ProductionConfig(Config):
 
 '''logging of lesser messages'''
 class HerokuConfig(ProductionConfig):
+    SSL_REDIRECT = True if os.env.get('DYNO') else False
+    
     @classmethod
     def init_app(cls, app):
         ProductionConfig.init_app(app)

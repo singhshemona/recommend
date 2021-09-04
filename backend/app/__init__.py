@@ -30,6 +30,10 @@ def create_app(config_name):
     login_manager.init_app(app)
     excel.init_excel(app) # should this be excel.init_excel.init_app(app)?
 
+    if app.config['SSL_REDIRECT']:
+        from flask_sslify import SSLify
+        sslify = SSLify(app)
+
 
     # attach routes and custom error pages here
 
